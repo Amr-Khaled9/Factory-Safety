@@ -29,6 +29,7 @@ class GoogleController extends Controller
                 'email_verified_at' => now(),
             ]
         );
+         $user->assignRole('user');
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
