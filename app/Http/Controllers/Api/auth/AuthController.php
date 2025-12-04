@@ -102,7 +102,6 @@ class AuthController extends Controller
             'data'    => [
                 'user' => $request->user(),
             ],
-            'token' => $request->user()->currentAccessToken()
         ]);
     }
 

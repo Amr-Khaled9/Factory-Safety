@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\auth\GoogleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\auth\AuthController;
+use App\Http\Controllers\Api\auth\UserManagementController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -29,6 +30,10 @@ Route::get('/google/redirect', [GoogleController::class, 'redirect'])->middlewar
 Route::get('/google/callback', [GoogleController::class, 'callback'])->middleware('web');
 
 
-Route::get('good', function () {
-    return true;
-})->middleware(['auth:sanctum', 'role:admin']);   // test Role
+
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    Route::get('good', function () {
+        return true;
+    }); //test Role
+    Route::post('add/user',[UserManagementController::class, 'CreateUser']);
+});
