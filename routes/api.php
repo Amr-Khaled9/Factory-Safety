@@ -1,13 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\auth\AuthController as AuthAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\auth\AuthController;
 
 // 1. Routes اللي مش محتاجة تسجيل دخول
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum'); // ده سيبيه زي ما هو
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
