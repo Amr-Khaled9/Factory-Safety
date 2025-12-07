@@ -28,19 +28,16 @@ Livewire / Blade
 
 Redis (optional)
 
-📸 Screenshots
-Chat Interface
+## 📸 Screenshots
 
+### Chat Interface
+![Chat UI](./image1.png)
 
+### Chat Sidebar
+![Chat Sidebar](./image2.png)
 
-
-Chat Sidebar
-
-
-
-
-Real-Time Messages
-
+### Real-Time Messages
+![Real-Time Messages](./image3.png)
 
 
 
