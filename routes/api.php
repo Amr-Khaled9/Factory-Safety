@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\auth\AuthController;
 use App\Http\Controllers\Api\auth\UserManagementController;
+use App\Http\Controllers\Api\LogsController\VehicleLogController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -37,3 +39,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     }); //test Role
     Route::post('add/user',[UserManagementController::class, 'CreateUser']);
 });
+
+Route::post('/vehicle-log', [VehicleLogController::class, 'handle']);
+
+
+ 

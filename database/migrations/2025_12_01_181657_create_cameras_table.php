@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('cameras', function (Blueprint $table) {
             $table->id();
+            $table->integer("number_camera");
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null'); // Foreign Key to users table (optional assignment)
             $table->string('location');
             $table->string('status');
