@@ -11,3 +11,4 @@ Route::get('/google/redirect', [GoogleController::class, 'redirect'])    ->middl
 Route::get('/google/callback', [GoogleController::class, 'callback'])    ->middleware('web');
 
 
+ 

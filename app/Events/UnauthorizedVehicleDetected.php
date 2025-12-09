@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class UnauthorizedVehicleDetected  implements ShouldBroadcast
 {
@@ -17,6 +18,7 @@ class UnauthorizedVehicleDetected  implements ShouldBroadcast
     public function __construct(public $notificationTitle, public $notificationMessage, public $adminId)
     {
         //
+        Log::info("UnauthorizedVehicleDetected Event created for admin ID: {$this->adminId}, {$this->notificationTitle},{$this->notificationMessage}");
     }
 
 

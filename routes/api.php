@@ -38,9 +38,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         return true;
     }); //test Role
     Route::post('add/user',[UserManagementController::class, 'CreateUser']);
+    
 });
 
 Route::post('/vehicle-log', [VehicleLogController::class, 'handle']);
+Route::get('/vehicle-log/all', [VehicleLogController::class, 'index']);
 
-
- 

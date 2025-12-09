@@ -12,6 +12,7 @@ use App\Models\Vehicle;
 use App\Models\VehicleLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Spatie\Permission\Traits\HasRoles;
@@ -54,7 +55,7 @@ class VehicleLogController extends Controller
 
 
 
-        
+
 
         if (!$vehicle) {
             $response = DB::transaction(function () use ($request) {
@@ -114,5 +115,18 @@ class VehicleLogController extends Controller
 
             return $response;
         }
+    }
+
+
+    public function index()
+    {
+        $logs = VehicleLog::with(['camera', 'vehicle'])->get();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => "Vehicle logs fetched successfully" ,
+            'data' => $logs
+
+        ], 200);
     }
 }
