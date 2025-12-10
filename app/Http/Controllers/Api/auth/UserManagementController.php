@@ -74,46 +74,69 @@ class UserManagementController extends Controller
 
     
     public function update(Request $request, User $user)
-    {
-        if (!$request->user()->hasRole('admin')) {
-            return response()->json(['message' => 'You are not allowed to perform this action'], 403);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'sometimes|string|in:admin,user',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Validation failed',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $user->name = $request->name ?? $user->name;
-        $user->email = $request->email ?? $user->email;
-
-        if ($request->password) {
-            $user->password = Hash::make($request->password);
-        }
-
-        $user->save();
-
-        
-        if ($request->role) {
-            $user->syncRoles([$request->role]);
-        }
-
+{
+    
+    if (!$request->user()->hasRole('admin')) {
         return response()->json([
-            'status' => 'success',
-            'message' => 'User updated successfully',
-            'data' => $user
-        ]);
+            'message' => 'You are not allowed to perform this action'
+        ], 403);
     }
+
+    
+    $validator = Validator::make($request->all(), [
+        'name' => 'sometimes|required|string|max:255',  
+        'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $user->id,  
+        'password' => 'nullable|string|min:8|confirmed',  
+        'role' => 'sometimes|required|string|in:admin,user',   
+    ], [
+     
+        'name.required' => 'Name cannot be empty',
+        'email.required' => 'Email cannot be empty',
+        'email.email' => 'Invalid email format',
+        'email.unique' => 'This email is already taken',
+        'password.min' => 'Password must be at least 8 characters',
+        'password.confirmed' => 'Password confirmation does not match',
+        'role.in' => 'Role must be either admin or user',
+    ]);
+
+    
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Validation failed',
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    // استخدام validated() عشان ناخد البيانات الصحيحة بس
+    $validated = $validator->validated();
+
+    // تحديث البيانات فقط لو موجودة وصحيحة
+    if (isset($validated['name'])) {
+        $user->name = $validated['name'];
+    }
+
+    if (isset($validated['email'])) {
+        $user->email = $validated['email'];
+    }
+
+    if (isset($validated['password']) && !empty($validated['password'])) {
+        $user->password = Hash::make($validated['password']);
+    }
+
+    $user->save();
+
+    // تحديث الـ role
+    if (isset($validated['role'])) {
+        $user->syncRoles([$validated['role']]);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'User updated successfully',
+        'data' => $user
+    ], 200);
+}
 
     
     public function destroy(Request $request, User $user)
