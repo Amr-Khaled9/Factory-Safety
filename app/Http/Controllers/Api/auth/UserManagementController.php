@@ -108,10 +108,10 @@ class UserManagementController extends Controller
         ], 422);
     }
 
-    // استخدام validated() عشان ناخد البيانات الصحيحة بس
+    
     $validated = $validator->validated();
 
-    // تحديث البيانات فقط لو موجودة وصحيحة
+    
     if (isset($validated['name'])) {
         $user->name = $validated['name'];
     }
@@ -126,7 +126,7 @@ class UserManagementController extends Controller
 
     $user->save();
 
-    // تحديث الـ role
+    
     if (isset($validated['role'])) {
         $user->syncRoles([$validated['role']]);
     }
