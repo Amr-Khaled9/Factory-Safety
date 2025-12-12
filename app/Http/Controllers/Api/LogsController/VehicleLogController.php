@@ -120,11 +120,12 @@ class VehicleLogController extends Controller
 
     public function index()
     {
-        $logs = VehicleLog::with(['camera', 'vehicle'])->get();
+        $logs = VehicleLog::with(['camera', 'vehicle'])->orderByDesc('created_at')
+            ->get();
 
         return response()->json([
             'status'  => 'success',
-            'message' => "Vehicle logs fetched successfully" ,
+            'message' => "Vehicle logs fetched successfully",
             'data' => $logs
 
         ], 200);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\auth\GoogleController;
+use App\Http\Controllers\Api\LogsController\PEELogControler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\auth\AuthController;
@@ -51,4 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/vehicle-log', [VehicleLogController::class, 'handle']);
 Route::get('/vehicle-log/all', [VehicleLogController::class, 'index']);
+
+Route::post('/pee-log', [PEELogControler::class, 'handle']);
+Route::get('/pee-log/all', [PEELogControler::class, 'index']);
 

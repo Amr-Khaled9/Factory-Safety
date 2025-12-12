@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Http\Controllers\Api\LogsController;
+
+use App\Events\PEEDetected;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PEELogRequest;
+use App\Models\Camera;
+use App\Models\Notification;
+use App\Models\PPELog;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class PEELogControler extends Controller
+{
+    public function handle(PEELogRequest $request)
+    {
+
+        $response = DB::transaction(function () use ($request) {
+            $imageName = time() . '_' . $request->image->getClientOriginalName();
+
+            $request->image->storeAs('image/pees', $imageName, 'public');
+            $peeLog = PPELog::create([
+                'image' => $imageName,
+                'ppe_id' => 1,
+                'camera_id' => Camera::where('number_camera', $request->number_camera)->value('id'),
+                'worker_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            $admins = User::role('admin', 'api')->get();
+
+            $notificationTitle = 'Worker Detected Without PPE';
+            $notificationMessage = 'PPE [Veste and Helmet] is not being worn by the worker.';
+
+            foreach ($admins as $admin) {
+                Notification::create([
+                    'title' => $notificationTitle,
+                    'message' => $notificationMessage,
+                    'notifiable_id' => $admin->id,
+                    'notifiable_type' => 'App\Models\User',
+                ]);
+                event(new PEEDetected($notificationTitle, $notificationMessage, $admin->id));
+            }
+            return response()->json([
+                'status'  => 'success',
+                'message' => $notificationMessage,
+                'data' => [
+                    'title' => $notificationTitle,
+                    'number_camera' => $request->number_camera,
+                    'log' => $peeLog,
+
+                ],
+            ]);
+        });
+
+        return $response;
+    }
+
+    public function index()
+    {
+        $logs = PPELog::with(['camera', 'pees', 'worker'])
+            ->orderByDesc('created_at')
+            ->get();
+        return response()->json([
+            'status'  => 'success',
+            'message' => "PEE logs fetched successfully",
+            'data' => $logs
+
+        ], 200);
+    }
+}

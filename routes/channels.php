@@ -11,3 +11,9 @@ Broadcast::channel('users.{id}', function (User $user, $id) {
  
     return (int) $user->id === (int) $id && $user->hasRole('admin');
 });
+
+Broadcast::channel('usersPee.{id}', function (User $user, $id) {
+ 
+    return (int) $user->id === (int) $id && $user->hasRole('admin');
+});
+
