@@ -9,6 +9,7 @@ use App\Models\Camera;
 use App\Models\Notification;
 use App\Models\PPELog;
 use App\Models\User;
+use App\Notifications\PEELogNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -36,14 +37,13 @@ class PEELogControler extends Controller
             $notificationMessage = 'PPE [Veste and Helmet] is not being worn by the worker.';
 
             foreach ($admins as $admin) {
-                Notification::create([
-                    'title' => $notificationTitle,
-                    'message' => $notificationMessage,
-                    'notifiable_id' => $admin->id,
-                    'notifiable_type' => 'App\Models\User',
-                ]);
-                event(new PEEDetected($notificationTitle, $notificationMessage, $admin->id));
+                $admin->notify(new PEELogNotification(
+                    $notificationTitle,
+                    $notificationMessage,
+                    $peeLog
+                ));
             }
+
             return response()->json([
                 'status'  => 'success',
                 'message' => $notificationMessage,

@@ -40,7 +40,7 @@ class AuthController extends Controller
             'email'  => $request->email,
             'password' => Hash::make($request->password),
         ]);
-         $user->assignRole('user');
+        $user->assignRole('user');
 
         // 3. Create Token
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -55,43 +55,53 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // Login
     public function login(Request $request)
     {
-        // Validation
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|email',
-            'password' => 'required',
+            'email'        => 'required|email',
+            'password'     => 'required|string',
+            'fcm_token'    => 'nullable|string',
+            'platform'     => 'nullable|in:android,ios',
+            'device_name'  => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status'  => 'error',
                 'message' => 'Validation failed',
-                'errors'  => $validator->errors()
+                'errors'  => $validator->errors(),
             ], 422);
         }
 
-        // Attempt login
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'status'  => 'error',
-                'message' => 'Invalid login details',
+                'message' => 'Invalid email or password',
             ], 401);
         }
 
-        $user  = User::where('email', $request->email)->firstOrFail();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $user = Auth::user();
 
+        if ($request->filled(['fcm_token', 'platform'])) {
+            $user->addFcmToken(
+                $request->fcm_token,
+                $request->platform,
+                $request->device_name
+            );
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+ 
         return response()->json([
             'status'  => 'success',
             'message' => 'Login successful',
             'data'    => [
                 'user'  => $user,
                 'token' => $token,
-            ]
+            ],
         ]);
     }
+
 
     // Profile
     public function profile(Request $request)

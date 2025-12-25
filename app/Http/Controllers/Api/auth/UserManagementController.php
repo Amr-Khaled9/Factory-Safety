@@ -25,7 +25,15 @@ class UserManagementController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->name),
             'email_verified_at' => now(),
+
         ]);
+        if ($request->filled(['fcm_token', 'platform'])) {
+            $user->addFcmToken(
+                $request->fcm_token,
+                $request->platform,
+                $request->device_name
+            );
+        }
         if ($request->role == 'admin') {
             $adminRole = Role::findByName('admin', 'api');
 

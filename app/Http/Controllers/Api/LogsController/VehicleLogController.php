@@ -10,6 +10,7 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\VehicleLog;
+use App\Notifications\VehicleLogNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -91,13 +92,12 @@ class VehicleLogController extends Controller
 
                 // Send notification to each admin
                 foreach ($admins as $admin) {
-                    Notification::create([
-                        'title' => $notificationTitle,
-                        'message' => $notificationMessage,
-                        'notifiable_id' => $admin->id,
-                        'notifiable_type' => 'App\Models\User',
-                    ]);
-                    event(new UnauthorizedVehicleDetected($notificationTitle, $notificationMessage, $admin->id));
+
+                    $admin->notify(new VehicleLogNotification(
+                        $notificationTitle,
+                        $notificationMessage,
+                        $vehicleLog
+                    ));
                 }
 
                 // Return the response after all operations are successful

@@ -26,6 +26,9 @@ class CreateUserRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
             'role' => 'required|string|in:user,admin',
+            'fcm_token'    => 'nullable|string',
+            'platform'     => 'nullable|in:android,ios',
+            'device_name'  => 'nullable|string',
         ];
     }
 }
