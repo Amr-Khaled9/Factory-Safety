@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\auth\AuthController;
 use App\Http\Controllers\Api\Auth\UserManagementController;
 use App\Http\Controllers\Api\LogsController\VehicleLogController;
+use App\Http\Controllers\FileUploadController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/user', function (Request $request) {

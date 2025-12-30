@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Spatie\Permission\Traits\HasRoles;
+use Cloudinary\Cloudinary;
 
 class VehicleLogController extends Controller
 {
-    public function handle(VehicleLogRequest $request)
+    public function handle(VehicleLogRequest $request,Cloudinary $cloudinary)
     {
 
         $vehicle = Vehicle::where('license_plate', $request->license_plate)
@@ -59,25 +60,33 @@ class VehicleLogController extends Controller
 
 
         if (!$vehicle) {
-            $response = DB::transaction(function () use ($request) {
+            $response = DB::transaction(function () use ($request,$cloudinary) {
 
                 // Upload image
-                $imageName = time() . '_' . $request->image->getClientOriginalName();
-
-                $request->image->storeAs('image/vehicles', $imageName, 'public');
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key'    => env('CLOUDINARY_KEY'),
+                    'api_secret' => env('CLOUDINARY_SECRET'),
+                ],
+            ]);
+            $path = $cloudinary->uploadApi()->upload(
+                $request->file('image')->getRealPath(),
+                ['folder' => 'laravel_uploads']
+            );
 
                 // Create vehicle
                 $newVehicle = Vehicle::create([
                     'license_plate' => $request->license_plate,
                     'authorized' => false,
                     'vehicle_type' => 'car',
-                    'image' => $imageName
+                    'image' => $path['secure_url']
                 ]);
 
                 // Create Log
                 $vehicleLog = VehicleLog::create([
                     'license_plate' => $newVehicle->license_plate,
-                    'image' => $imageName,
+                    'image' => $path['secure_url'],
                     'authorized' => $newVehicle->authorized,
                     'vehicle_id' => $newVehicle->id,
                     'camera_id' => Camera::where('number_camera', $request->number_camera)->value('id')
@@ -108,6 +117,7 @@ class VehicleLogController extends Controller
                         'title' => $notificationTitle,
                         'detiles_vehicle' => $vehicleLog,
                         'number_camera' => $request->number_camera,
+                        'image'=>$path['secure_url']
 
                     ],
                 ]);

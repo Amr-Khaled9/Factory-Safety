@@ -10,20 +10,32 @@ use App\Models\Notification;
 use App\Models\PPELog;
 use App\Models\User;
 use App\Notifications\PEELogNotification;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PEELogControler extends Controller
 {
-    public function handle(PEELogRequest $request)
+    public function handle(PEELogRequest $request, Cloudinary $cloudinary)
     {
 
-        $response = DB::transaction(function () use ($request) {
-            $imageName = time() . '_' . $request->image->getClientOriginalName();
+        $response = DB::transaction(function () use ($request,$cloudinary) {
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key'    => env('CLOUDINARY_KEY'),
+                    'api_secret' => env('CLOUDINARY_SECRET'),
+                ],
+            ]);
+            $path = $cloudinary->uploadApi()->upload(
+                $request->file('image')->getRealPath(),
+                ['folder' => 'laravel_uploads']
+            );
 
-            $request->image->storeAs('image/pees', $imageName, 'public');
+
+            // $request->image->storeAs('image/pees', $imageName, 'public');
             $peeLog = PPELog::create([
-                'image' => $imageName,
+                'image' => $path['secure_url'],
                 'ppe_id' => 1,
                 'camera_id' => Camera::where('number_camera', $request->number_camera)->value('id'),
                 'worker_id' => 1,
