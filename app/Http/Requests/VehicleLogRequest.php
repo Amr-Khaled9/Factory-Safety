@@ -23,7 +23,7 @@ class VehicleLogRequest extends FormRequest
     {
         return [
             'license_plate'=> 'required|string|max:10|min:7',
-            'image'=> 'required|image',
+            'image'=> 'required|image|max:2048',
             'number_camera' => 'required|integer'
         ];
     }

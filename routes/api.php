@@ -51,9 +51,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
-Route::post('/vehicle-log', [VehicleLogController::class, 'handle']);
+Route::post('/vehicle-log', [VehicleLogController::class, 'storeVehicleLogAndNotify']);
 Route::get('/vehicle-log/all', [VehicleLogController::class, 'index']);
+Route::get('/vehicle-log/{id}', [VehicleLogController::class, 'show']);
 
-Route::post('/pee-log', [PEELogControler::class, 'handle']);
+Route::post('/pee-log', [PEELogControler::class, 'storePpeLogAndNotify']);
 Route::get('/pee-log/all', [PEELogControler::class, 'index']);
+Route::get('/pee-log/{id}', [PEELogControler::class, 'show']);
 

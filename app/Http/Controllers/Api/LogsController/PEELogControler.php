@@ -2,59 +2,35 @@
 
 namespace App\Http\Controllers\Api\LogsController;
 
-use App\Events\PEEDetected;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PEELogRequest;
-use App\Models\Camera;
-use App\Models\Notification;
 use App\Models\PPELog;
-use App\Models\User;
-use App\Notifications\PEELogNotification;
-use Cloudinary\Cloudinary;
-use Illuminate\Http\Request;
+use App\Services\PEELogServices;
 use Illuminate\Support\Facades\DB;
 
 class PEELogControler extends Controller
 {
-    public function handle(PEELogRequest $request, Cloudinary $cloudinary)
+    private $pEELogServices;
+    public function __construct(PEELogServices $pEELogServices)
+    {
+        $this->pEELogServices = $pEELogServices;
+    }
+
+    public function storePpeLogAndNotify(PEELogRequest $request)
     {
 
-        $response = DB::transaction(function () use ($request,$cloudinary) {
-            $cloudinary = new Cloudinary([
-                'cloud' => [
-                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                    'api_key'    => env('CLOUDINARY_KEY'),
-                    'api_secret' => env('CLOUDINARY_SECRET'),
-                ],
-            ]);
-            $path = $cloudinary->uploadApi()->upload(
-                $request->file('image')->getRealPath(),
-                ['folder' => 'laravel_uploads']
-            );
+        $response = DB::transaction(function () use ($request) {
 
+            $imagePath = $this->pEELogServices->upload($request->image);
 
-            // $request->image->storeAs('image/pees', $imageName, 'public');
-            $peeLog = PPELog::create([
-                'image' => $path['secure_url'],
-                'ppe_id' => 1,
-                'camera_id' => Camera::where('number_camera', $request->number_camera)->value('id'),
-                'worker_id' => 1,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
+            $peeLog = $this->pEELogServices->create($request, $imagePath);
 
-            $admins = User::role('admin', 'api')->get();
 
             $notificationTitle = 'Worker Detected Without PPE';
             $notificationMessage = 'PPE [Veste and Helmet] is not being worn by the worker.';
 
-            foreach ($admins as $admin) {
-                $admin->notify(new PEELogNotification(
-                    $notificationTitle,
-                    $notificationMessage,
-                    $peeLog
-                ));
-            }
+
+            $this->pEELogServices->notifyAdmins($peeLog, $notificationTitle, $notificationMessage);
 
             return response()->json([
                 'status'  => 'success',
@@ -80,6 +56,18 @@ class PEELogControler extends Controller
             'status'  => 'success',
             'message' => "PEE logs fetched successfully",
             'data' => $logs
+
+        ], 200);
+    }
+
+    public function show($id)
+    {
+        $log = PPELog::with(['camera', 'pees', 'worker'])
+            ->findOrFail($id);
+        return response()->json([
+            'status'  => 'success',
+            'message' => "PEE log fetched successfully",
+            'data' => $log
 
         ], 200);
     }
