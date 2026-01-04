@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\auth\AuthController;
 use App\Http\Controllers\Api\Auth\UserManagementController;
 use App\Http\Controllers\Api\LogsController\VehicleLogController;
-use App\Http\Controllers\FileUploadController;
-use Illuminate\Support\Facades\Auth;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -35,20 +34,13 @@ Route::get('/google/callback', [GoogleController::class, 'callback'])->middlewar
 
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum','role:admin'])->group(function () {
 
-    Route::get('good', function () {
-        return true;
-    }); //test Role
-    
     Route::post('add/user', [UserManagementController::class, 'CreateUser']);
-
     Route::get('users', [UserManagementController::class, 'index']);
     Route::get('users/{user}', [UserManagementController::class, 'show']);
     Route::put('users/{user}', [UserManagementController::class, 'update']);
     Route::delete('users/{user}', [UserManagementController::class, 'destroy']);
-
-
 });
 
 Route::post('/vehicle-log', [VehicleLogController::class, 'storeVehicleLogAndNotify']);
