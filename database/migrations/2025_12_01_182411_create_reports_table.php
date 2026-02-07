@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign Key to users table (The user who created the report)
-            $table->foreignId('worker_id')->nullable()->constrained()->onDelete('set null'); // Foreign Key to workers table (The worker involved, if any)
-            $table->foreignId('camera_id')->nullable()->constrained()->onDelete('set null'); // Foreign Key to cameras table (The camera that captured the event, if any)
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('worker_id')->nullable()->constrained()->onDelete('set null'); 
+            $table->foreignId('camera_id')->nullable()->constrained()->onDelete('set null'); 
             $table->string('report_type');
             $table->string('file_path');
             $table->timestamps();
