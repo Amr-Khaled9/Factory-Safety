@@ -15,7 +15,7 @@ class AreaLog extends Model
         'worker_id'
     ];
 
-<<<<<<< HEAD
+
     public function notifications(): MorphMany
     {
         return $this->morphMany(Notification::class, 'notifiable');
@@ -36,10 +36,6 @@ class AreaLog extends Model
     {
         return $this->belongsTo(Worker::class);
     }
-=======
-        public function notifications(): MorphMany
-    {
-        return $this->morphMany(Notification::class, 'notifiable');
-    }
->>>>>>> fa6b5a2058f1b63a118f4e1abbee7ff61b3de0fa
+ 
+ 
 }

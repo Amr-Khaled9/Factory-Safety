@@ -6,10 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\auth\AuthController;
 use App\Http\Controllers\Api\Auth\UserManagementController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\Api\DashboardController;
-=======
->>>>>>> fa6b5a2058f1b63a118f4e1abbee7ff61b3de0fa
+
 use App\Http\Controllers\Api\LogsController\VehicleLogController;
 
 
@@ -55,7 +54,4 @@ Route::post('/pee-log', [PEELogControler::class, 'storePpeLogAndNotify']);
 Route::get('/pee-log/all', [PEELogControler::class, 'index']);
 Route::get('/pee-log/{id}', [PEELogControler::class, 'show']);
 
-<<<<<<< HEAD
 Route::get('/dashboard',[DashboardController::class,'index']);
-=======
->>>>>>> fa6b5a2058f1b63a118f4e1abbee7ff61b3de0fa
