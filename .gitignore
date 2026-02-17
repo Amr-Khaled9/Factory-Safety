@@ -3,6 +3,8 @@
 .env
 .env.backup
 .env.production
+.env.local
+.env.development
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -22,3 +24,17 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Docker Local
+docker-compose.override.yml
+docker-compose.local.yml
+Dockerfile.local
+
+# Nginx Local / Dev
+docker/nginx/*.local.conf
+docker/nginx/*.dev.conf
+
+
+docker/nginx/default.conf
+Dockerfile
+docker-compose.yml
