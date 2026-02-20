@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\VehiclManagementController;
 use App\Http\Controllers\Api\auth\GoogleController;
 use App\Http\Controllers\Api\LogsController\PEELogControler;
 use Illuminate\Http\Request;
@@ -37,13 +38,27 @@ Route::get('/google/callback', [GoogleController::class, 'callback'])->middlewar
 
 
 
-Route::middleware(['auth:sanctum','role:admin'])->group(function () {
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     Route::post('add/user', [UserManagementController::class, 'CreateUser']);
     Route::get('users', [UserManagementController::class, 'index']);
     Route::get('users/{user}', [UserManagementController::class, 'show']);
     Route::put('users/{user}', [UserManagementController::class, 'update']);
     Route::delete('users/{user}', [UserManagementController::class, 'destroy']);
+
+
+
+    Route::get('/vehicles', [VehiclManagementController::class, 'index']);
+
+    Route::post('/vehicles', [VehiclManagementController::class, 'create']);
+
+    Route::put('/vehicles/{id}', [VehiclManagementController::class, 'update']);
+
+    Route::delete('/vehicles/{id}', [VehiclManagementController::class, 'destroy']);
+
+    Route::get('/vehicles/authorized', [VehiclManagementController::class, 'authorizedVehicles']);
+
+    Route::get('/vehicles/unauthorized', [VehiclManagementController::class, 'unauthorizedVehicles']);
 });
 
 Route::post('/vehicle-log', [VehicleLogController::class, 'storeVehicleLogAndNotify']);
@@ -54,6 +69,6 @@ Route::post('/pee-log', [PEELogControler::class, 'storePpeLogAndNotify']);
 Route::get('/pee-log/all', [PEELogControler::class, 'index']);
 Route::get('/pee-log/{id}', [PEELogControler::class, 'show']);
 
-Route::get('/dashboard',[DashboardController::class,'index']);
+Route::get('/dashboard', [DashboardController::class, 'index']);
 
-Route::get('/report',[ReportController::class,'getReport']);
+Route::get('/report', [ReportController::class, 'getReport']);
