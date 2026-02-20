@@ -24,11 +24,11 @@ class PEELogControler extends Controller
             $imagePath = $this->pEELogServices->upload($request->image);
 
             $peeLog = $this->pEELogServices->create($request, $imagePath);
+            $ppeType = strtolower($request->type);
 
 
             $notificationTitle = 'Worker Detected Without PPE';
-            $notificationMessage = 'PPE [Veste and Helmet] is not being worn by the worker.';
-
+            $notificationMessage = "PPE {$ppeType} is not being worn by the worker.";
 
             $this->pEELogServices->notifyAdmins($peeLog, $notificationTitle, $notificationMessage);
 
@@ -49,16 +49,30 @@ class PEELogControler extends Controller
 
     public function index()
     {
-        $logs = PPELog::with(['camera', 'pees', 'worker'])
+        $vesteLogs = PPELog::with(['camera', 'pees', 'worker'])
+            ->whereHas('pees', function ($q) {
+                $q->where('ppe_type', 'veste');
+            })
             ->orderByDesc('created_at')
             ->get();
+
+        $helmetLogs = PPELog::with(['camera', 'pees', 'worker'])
+            ->whereHas('pees', function ($q) {
+                $q->where('ppe_type', 'helmet');
+            })
+            ->orderByDesc('created_at')
+            ->get();
+
         return response()->json([
             'status'  => 'success',
-            'message' => "PEE logs fetched successfully",
-            'data' => $logs
-
+            'message' => "PPE logs fetched successfully",
+            'data' => [
+                'veste' => $vesteLogs,
+                'helmet' => $helmetLogs,
+            ]
         ], 200);
     }
+
 
     public function show($id)
     {

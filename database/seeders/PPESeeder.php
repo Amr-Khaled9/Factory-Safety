@@ -14,9 +14,17 @@ class PPESeeder extends Seeder
     public function run(): void
     {
         DB::table('ppes')->delete();
-         DB::table('ppes')->insert([
-            'ppe_type' => 'Veste and Helmet',
-            'description' => 'Safety PPE type that includes both vest and helmet.',
+
+        DB::table('ppes')->insert([
+            'ppe_type' => 'veste',
+            'description' => 'A safety vest that enhances visibility and protects the upper body.',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('ppes')->insert([
+            'ppe_type' => 'helmet',
+            'description' => 'A safety helmet designed to protect the head from impacts and falling objects.',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
