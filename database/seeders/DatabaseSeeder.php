@@ -23,6 +23,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123456789'),
-         ])->assignRole($adminRole);
+        ])->assignRole($adminRole);
+
+
+        $this->call([
+            RolePermissionSeeder::class,
+            PPESeeder::class,
+            CameraSeeder::class,    
+            WorkerSeeder::class,
+        ]);
     }
 }

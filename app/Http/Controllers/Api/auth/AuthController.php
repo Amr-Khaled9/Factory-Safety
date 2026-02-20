@@ -60,9 +60,9 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email'        => 'required|email',
             'password'     => 'required|string',
-            'fcm_token'    => 'nullable|string',
-            'platform'     => 'nullable|in:android,ios',
-            'device_name'  => 'nullable|string',
+            'fcm_token'    => 'required|string',
+            'platform'     => 'required|in:android,ios',
+            'device_name'  => 'required|string',
         ]);
 
         if ($validator->fails()) {
