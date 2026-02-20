@@ -21,6 +21,7 @@ class DashboardController extends Controller
             'message' => 'Dashboard data fetched successfully',
             'data'    => [
                 'Today Accident Count' => $this->dashboardService->allTodayAccidentCount(),
+                'getSafetyCompliance' => $this->dashboardService->getDailySafetyCompliance(),
                 'Area With Most Violations' => $this->dashboardService->getAreaWithMostViolations(),
                 'Real Time Alerts' => $this->dashboardService->getRealTimeAlerts(),
             ]

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\AreaLog;
 use App\Models\PPELog;
 use App\Models\VehicleLog;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class DashboardService
@@ -62,5 +63,34 @@ class DashboardService
             'vehicle_log'  => $vehicleLog,
             'area_log'     => $areaLog,
         ];
+    }
+
+
+
+    public function getDailySafetyCompliance()
+    {
+        $today = Carbon::today();
+
+        $tables = ['ppe_logs', 'vehicle_logs', 'area_logs'];
+
+        $totalAll = 0;
+        $totalToday = 0;
+
+        foreach ($tables as $table) {
+
+            // إجمالي كل السجلات
+            $totalAll += DB::table($table)->count();
+
+            // سجلات اليوم فقط
+            $totalToday += DB::table($table)
+                ->whereDate('created_at', $today)
+                ->count();
+        }
+
+        if ($totalAll == 0) {
+            return 0;
+        }
+
+        return 100 -round(($totalToday / $totalAll) * 100, 2);
     }
 }
