@@ -10,7 +10,7 @@ use App\Http\Controllers\Api\Auth\UserManagementController;
 use App\Http\Controllers\Api\DashboardController;
 
 use App\Http\Controllers\Api\LogsController\VehicleLogController;
-
+use App\Http\Controllers\ReportController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -55,3 +55,5 @@ Route::get('/pee-log/all', [PEELogControler::class, 'index']);
 Route::get('/pee-log/{id}', [PEELogControler::class, 'show']);
 
 Route::get('/dashboard',[DashboardController::class,'index']);
+
+Route::get('/report',[ReportController::class,'getReport']);

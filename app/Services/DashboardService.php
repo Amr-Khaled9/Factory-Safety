@@ -78,10 +78,8 @@ class DashboardService
 
         foreach ($tables as $table) {
 
-            // إجمالي كل السجلات
             $totalAll += DB::table($table)->count();
 
-            // سجلات اليوم فقط
             $totalToday += DB::table($table)
                 ->whereDate('created_at', $today)
                 ->count();
@@ -91,6 +89,6 @@ class DashboardService
             return 0;
         }
 
-        return 100 -round(($totalToday / $totalAll) * 100, 2);
+        return round(($totalToday / $totalAll) * 100, 2);
     }
 }
