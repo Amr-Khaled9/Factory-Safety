@@ -48,7 +48,7 @@ class VehicleDetectionService
                 'camera_id'     => Camera::where('number_camera', $data['number_camera'])->value('id'),
             ]);
 
-            $this->notifyAdmins($vehicleLog);
+            //$this->notifyAdmins($vehicleLog);
 
             return [
                 'status'  => 'success',
