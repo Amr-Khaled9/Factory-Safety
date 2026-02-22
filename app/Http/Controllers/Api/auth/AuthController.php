@@ -60,9 +60,9 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email'        => 'required|email',
             'password'     => 'required|string',
-            'fcm_token'    => 'required|string',
-            'platform'     => 'required|in:android,ios',
-            'device_name'  => 'required|string',
+            'fcm_token'    => 'nullable|string',
+            'platform'     => 'nullable|in:android,ios',
+            'device_name'  => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -73,15 +73,17 @@ class AuthController extends Controller
             ], 422);
         }
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        // التحقق من المستخدم وكلمة السر يدويًا
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'status'  => 'error',
                 'message' => 'Invalid email or password',
             ], 401);
         }
 
-        $user = Auth::user();
-
+        // إضافة FCM token لو موجود
         if ($request->filled(['fcm_token', 'platform'])) {
             $user->addFcmToken(
                 $request->fcm_token,
@@ -90,8 +92,9 @@ class AuthController extends Controller
             );
         }
 
+        // إنشاء token جديد للمستخدم
         $token = $user->createToken('auth_token')->plainTextToken;
- 
+
         return response()->json([
             'status'  => 'success',
             'message' => 'Login successful',
