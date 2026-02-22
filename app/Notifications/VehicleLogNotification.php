@@ -14,7 +14,7 @@ use NotificationChannels\Fcm\Resources\Notification as FcmNotification;
 class VehicleLogNotification extends Notification
 {
     use Queueable;
- 
+
     protected string $title;
     protected string $message;
     protected $vehicleLog;
@@ -42,30 +42,27 @@ class VehicleLogNotification extends Notification
     public function toFcm($notifiable): FcmMessage
     {
         return FcmMessage::create()
-            ->setNotification(
-                FcmNotification::create()
-                    ->setTitle($this->title)
-                    ->setBody($this->message)
-            )
+            ->setNotification(FcmNotification::create([
+                'title' => $this->title,
+                'body' => $this->message,
+            ]))
             ->setData([
-                'type'       => 'vehicle_log',
-                'pee_log' => $this->vehicleLog->id,
-                'click_action' => 'OPEN_PEE_LOG',
+                'type' => 'vehicle_log',
+                'vehicle_log' => $this->vehicleLog->id,
+                'click_action' => 'OPEN_VEHICLE_LOG',
             ])
-            ->setCustom([
-                'android' => [
-                    'notification' => [
-                        'sound' => 'default',
-                        'channel_id' => 'vehicle_logs',
-                        'color' => '#ff0000ff',
-                    ],
+            ->setAndroid([
+                'notification' => [
+                    'sound' => 'default',
+                    'channel_id' => 'vehicle_logs',
+                    'color' => '#ff0000ff',
                 ],
-                'apns' => [
-                    'payload' => [
-                        'aps' => [
-                            'sound' => 'default',
-                            'badge' => 1,
-                        ],
+            ])
+            ->setApns([
+                'payload' => [
+                    'aps' => [
+                        'sound' => 'default',
+                        'badge' => 1,
                     ],
                 ],
             ]);

@@ -37,30 +37,27 @@ class PEELogNotification extends Notification
     public function toFcm($notifiable): FcmMessage
     {
         return FcmMessage::create()
-            ->setNotification(
-                FcmNotification::create()
-                    ->setTitle($this->title)
-                    ->setBody($this->message)
-            )
+            ->setNotification(FcmNotification::create([
+                'title' => $this->title,
+                'body' => $this->message,
+            ]))
             ->setData([
-                'type'       => 'pee_log',
+                'type' => 'pee_log',
                 'pee_log' => $this->peeLog->id,
                 'click_action' => 'OPEN_PEE_LOG',
             ])
-            ->setCustom([
-                'android' => [
-                    'notification' => [
-                        'sound' => 'default',
-                        'channel_id' => 'pee_logs',
-                        'color' => '#ff0000ff',
-                    ],
+            ->setAndroid([
+                'notification' => [
+                    'sound' => 'default',
+                    'channel_id' => 'pee_logs',
+                    'color' => '#ff0000ff',
                 ],
-                'apns' => [
-                    'payload' => [
-                        'aps' => [
-                            'sound' => 'default',
-                            'badge' => 1,
-                        ],
+            ])
+            ->setApns([
+                'payload' => [
+                    'aps' => [
+                        'sound' => 'default',
+                        'badge' => 1,
                     ],
                 ],
             ]);
