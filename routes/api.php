@@ -6,8 +6,7 @@ use App\Http\Controllers\Api\LogsController\PEELogControler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\auth\AuthController;
-use App\Http\Controllers\Api\Auth\UserManagementController;
-
+use App\Http\Controllers\Api\auth\UserManagementController;
 use App\Http\Controllers\Api\DashboardController;
 
 use App\Http\Controllers\Api\LogsController\VehicleLogController;
