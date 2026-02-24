@@ -37,7 +37,7 @@ class ReportService
             return 0;
         }
 
-        return  round(($totalPeriod / $totalAll) * 100, 2);
+        return  100- round(($totalPeriod / $totalAll) * 100, 2);
     }
 
 

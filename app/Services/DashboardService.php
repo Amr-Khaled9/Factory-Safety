@@ -12,9 +12,11 @@ class DashboardService
 {
     public function allTodayAccidentCount()
     {
-        $ppeLog = PPELog::count();
-        $vehicleLog = VehicleLog::count();
-        $areaLog = AreaLog::count();
+        $today = now()->toDateString();
+
+        $ppeLog = PPELog::whereDate('created_at', $today)->count();
+        $vehicleLog = VehicleLog::whereDate('created_at', $today)->count();
+        $areaLog = AreaLog::whereDate('created_at', $today)->count();
 
         $accidentCount = $ppeLog + $vehicleLog + $areaLog;
         return $accidentCount;
@@ -89,6 +91,6 @@ class DashboardService
             return 0;
         }
 
-        return round(($totalToday / $totalAll) * 100, 2);
+        return 100 -round(($totalToday / $totalAll) * 100, 2);
     }
 }
