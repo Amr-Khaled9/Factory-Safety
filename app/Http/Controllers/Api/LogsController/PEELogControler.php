@@ -30,7 +30,7 @@ class PEELogControler extends Controller
             $notificationTitle = 'Worker Detected Without PPE';
             $notificationMessage = "PPE {$ppeType} is not being worn by the worker.";
 
-            $this->pEELogServices->notifyAdmins($peeLog, $notificationTitle, $notificationMessage);
+            //$this->pEELogServices->notifyAdmins($peeLog, $notificationTitle, $notificationMessage);
 
             return response()->json([
                 'status'  => 'success',
