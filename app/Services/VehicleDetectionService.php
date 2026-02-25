@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class VehicleDetectionService
 {
+    private $fcmService;
+    public function __construct(FcmService $fcmService){
+        $this->fcmService = $fcmService;
+    }
     public function processAiVehicleDetection(array $data): array
     {
         $vehicle = Vehicle::where('license_plate', $data['license_plate'])->first();
@@ -48,6 +52,21 @@ class VehicleDetectionService
                 'camera_id'     => Camera::where('number_camera', $data['number_camera'])->value('id'),
             ]);
 
+            $notificationTitle = 'Unauthorized Vehicle Detected';
+            $notificationMessage = "Vehicle [{$vehicleLog->license_plate}] entered and is NOT authorized.";
+            $users = User::whereHas('fcmToken')->with('fcmToken')->get();
+
+            foreach ($users as $user) {
+                if ($user->fcmToken && $user->fcmToken->fcm_token) {
+                    $this->fcmService->sendNotification(
+                        $user->fcmToken->fcm_token,
+                        $notificationTitle,
+                        $notificationMessage,
+                    );
+                }
+            }
+
+            
             //$this->notifyAdmins($vehicleLog);
 
             return [

@@ -54,6 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(FcmToken::class);
     }
+    public function fcmToken(){
+        return $this->hasOne(FcmToken::class);
+    }
 
     /**
      * Required by laravel-notification-channels/fcm
