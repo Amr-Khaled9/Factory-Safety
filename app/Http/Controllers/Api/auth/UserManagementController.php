@@ -19,8 +19,9 @@ class UserManagementController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->name),
+            'password' => Hash::make($request->password),
             'email_verified_at' => now(),
+            'role' => $request->role
 
         ]);
 
@@ -32,9 +33,7 @@ class UserManagementController extends Controller
             );
         }
 
-        $userRole = Role::findByName('user', 'api');
 
-        $user->assignRole($userRole);
         return response()->json([
             'status'  => 'success',
             'message' => 'User created successfully',
@@ -69,7 +68,7 @@ class UserManagementController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $validated = $request->validated();
-         if (isset($validated['name'])) {
+        if (isset($validated['name'])) {
             $user->name = $validated['name'];
         }
 
@@ -80,12 +79,14 @@ class UserManagementController extends Controller
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
         }
+        if (isset($validated['role'])) {
+            $user->role = $validated['role'];
+        }
+
 
         $user->save();
 
-        if (isset($validated['role'])) {
-            $user->syncRoles([$validated['role']]);
-        }
+
 
         return response()->json([
             'status' => 'success',
@@ -96,10 +97,15 @@ class UserManagementController extends Controller
 
 
 
-    public function destroy(Request $request, User $user)
+    public function destroy(Request $request, $id)
     {
-        if ($request->user()->id === $user->id) {
-            return response()->json(['message' => 'Cannot delete yourself'], 403);
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found',
+            ], 404);
         }
 
         $user->delete();

@@ -17,7 +17,7 @@ class CameraSeeder extends Seeder
             [
                 'id' => 1,
                 'number_camera' => 1,
-                'user_id' => User::role('admin','api')->first()->id,
+                'user_id' => User::first()->id,
                 'location' => 'Main Entrance',
                 'status' => 'Active',
                 'installation_date' => '2025-12-12',

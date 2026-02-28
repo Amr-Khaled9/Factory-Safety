@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, CanResetPassword, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, CanResetPassword;
     protected $guard_name = 'api';
     /**
      * The attributes that are mass assignable.
@@ -24,7 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'email_verified_at'
+        'email_verified_at',
+        'role'
     ];
 
     /**
@@ -54,7 +54,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(FcmToken::class);
     }
-    public function fcmToken(){
+    public function fcmToken()
+    {
         return $this->hasOne(FcmToken::class);
     }
 
@@ -87,5 +88,10 @@ class User extends Authenticatable
             'platform' => $platform,
             'device_name' => $deviceName,
         ]);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }
