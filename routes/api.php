@@ -26,7 +26,7 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/profile', [AuthController::class, 'profile']);
+    // Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
@@ -37,7 +37,8 @@ Route::get('/google/callback', [GoogleController::class, 'callback'])->middlewar
 
 
 
-Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('/profile', [AuthController::class, 'profile']);
 
     /*     Route::post('add/user', [UserManagementController::class, 'CreateUser']);
     Route::get('users', [UserManagementController::class, 'index']);
@@ -58,7 +59,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::get('/vehicles/authorized', [VehiclManagementController::class, 'authorizedVehicles']);
 
     Route::get('/vehicles/unauthorized', [VehiclManagementController::class, 'unauthorizedVehicles']); */
+
 });
+    Route::delete('users/{id}', [UserManagementController::class, 'destroy']);
 
 Route::post('/vehicle-log', [VehicleLogController::class, 'storeVehicleLogAndNotify']);
 Route::get('/vehicle-log/all', [VehicleLogController::class, 'index']);
@@ -75,7 +78,6 @@ Route::post('add/user', [UserManagementController::class, 'CreateUser']);
 Route::get('users', [UserManagementController::class, 'index']);
 Route::get('users/{user}', [UserManagementController::class, 'show']);
 Route::put('users/{user}', [UserManagementController::class, 'update']);
-Route::delete('users/{user}', [UserManagementController::class, 'destroy']);
 
 
 

@@ -16,7 +16,7 @@ class WorkerSeeder extends Seeder
         DB::table('workers')->insert([
             [
                 'id' => 1,
-                'user_id' => User::role('admin','api')->first()->id, 
+                'user_id' => User::first()->id, 
                 'name' => 'John Doe',
                 'phone' => '0123456789',
                 'position' => 'Operator',
