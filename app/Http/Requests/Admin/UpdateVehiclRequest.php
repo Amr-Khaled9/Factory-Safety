@@ -25,7 +25,7 @@ class UpdateVehiclRequest extends FormRequest
             'authorized'     => 'sometimes|boolean',
             'license_plate'  => 'sometimes|string|min:7|max:10',
             'image'          => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
-            'number_camera'  => 'sometimes|integer|min:1',
+            'number_camera'  => 'nullable|integer|min:1',
             'vehicle_type' => 'nullable|string|in:car,bike,truck',
         ];
     }

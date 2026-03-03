@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\DB;
 class VehicleDetectionService
 {
     private $fcmService;
-    public function __construct(FcmService $fcmService){
+    public function __construct(FcmService $fcmService)
+    {
         $this->fcmService = $fcmService;
     }
     public function processAiVehicleDetection(array $data): array
@@ -66,7 +67,7 @@ class VehicleDetectionService
                 }
             }
 
-            
+
             //$this->notifyAdmins($vehicleLog);
 
             return [
@@ -105,7 +106,7 @@ class VehicleDetectionService
         ];
     }
 
-    private function uploadImage($image): string
+    public function uploadImage($image): string
     {
         $cloudinary = new Cloudinary([
             'cloud' => [

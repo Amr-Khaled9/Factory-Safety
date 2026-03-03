@@ -6,10 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateVehiclRequest;
 use App\Http\Requests\Admin\UpdateVehiclRequest;
 use App\Models\Vehicle;
+use App\Services\VehicleDetectionService;
 use Illuminate\Http\Request;
 
 class VehiclManagementController extends Controller
 {
+    private $vehicleDetectionService;
+    public function __construct(VehicleDetectionService $vehicleDetectionService)
+    {
+        $this->vehicleDetectionService = $vehicleDetectionService;
+    }
     public function index()
     {
         $vehicles = Vehicle::paginate(10);
@@ -23,19 +29,37 @@ class VehiclManagementController extends Controller
 
     public function create(CreateVehiclRequest $request)
     {
-        $vehicle = Vehicle::create($request->all());
+        $data = $request->validated();
+
+        $imageUrl = $this->vehicleDetectionService
+            ->uploadImage($request->file('image'));
+
+        $vehicle = Vehicle::create([
+            'authorized'    => $data['authorized'],
+            'license_plate' => $data['license_plate'],
+            'vehicle_type'  => $data['vehicle_type'],
+            'image'         => $imageUrl,
+        ]);
+
         return response()->json([
             'status'  => 'success',
-            'message' => "Vehicle Created successfully",
-            'data' => $vehicle
-
-        ], 200);
+            'message' => 'Vehicle Created successfully',
+            'data'    => $vehicle
+        ], 201);
     }
 
     public function update(UpdateVehiclRequest $request, $id)
     {
         $vehicle = Vehicle::findOrFail($id);
-         $vehicle->update($request->validated());
+
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $imageUrl = $this->vehicleDetectionService->uploadImage($request->file('image'));
+            $data['image'] = $imageUrl;
+        }
+
+        $vehicle->update($data);
 
         return response()->json([
             'status'  => 'success',

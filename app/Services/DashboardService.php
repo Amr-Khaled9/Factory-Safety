@@ -47,13 +47,15 @@ class DashboardService
 
     public function getRealTimeAlerts()
     {
-        $ppeLog = PPELog::with(['worker', 'pees', 'worker'])
-            ->latest()
-            ->first();
+        $ppeLogs = PPELog::with(['worker', 'pees'])
+            ->latest()       
+            ->take(2)       
+            ->get();
 
-        $vehicleLog = VehicleLog::with(['vehicle', 'camera'])
+        $vehicleLogs = VehicleLog::with(['vehicle', 'camera'])
             ->latest()
-            ->first();
+            ->take(2)
+            ->get();
 
         $areaLog = AreaLog::with(['area', 'camera', 'worker'])
             ->latest()
@@ -61,8 +63,8 @@ class DashboardService
 
         return [/*  */
             'title'        => 'Real Time Alerts',
-            'ppe_log'      => $ppeLog,
-            'vehicle_log'  => $vehicleLog,
+            'ppe_log'      => $ppeLogs,
+            'vehicle_log'  => $vehicleLogs,
             'area_log'     => $areaLog,
         ];
     }
@@ -91,6 +93,6 @@ class DashboardService
             return 0;
         }
 
-        return 100 -round(($totalToday / $totalAll) * 100, 2);
+        return 100 - round(($totalToday / $totalAll) * 100, 2);
     }
 }
