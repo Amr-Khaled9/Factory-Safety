@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\auth\AuthController;
 use App\Http\Controllers\Api\auth\UserManagementController;
 use App\Http\Controllers\Api\DashboardController;
-
+use App\Http\Controllers\Api\LogsController\SpeedViolationController;
 use App\Http\Controllers\Api\LogsController\VehicleLogController;
 use App\Http\Controllers\ReportController;
 
@@ -59,9 +59,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/vehicles/authorized', [VehiclManagementController::class, 'authorizedVehicles']);
 
     Route::get('/vehicles/unauthorized', [VehiclManagementController::class, 'unauthorizedVehicles']); */
-
 });
-    Route::delete('users/{id}', [UserManagementController::class, 'destroy']);
+Route::delete('users/{id}', [UserManagementController::class, 'destroy']);
 
 Route::post('/vehicle-log', [VehicleLogController::class, 'storeVehicleLogAndNotify']);
 Route::get('/vehicle-log/all', [VehicleLogController::class, 'index']);
@@ -70,6 +69,10 @@ Route::get('/vehicle-log/{id}', [VehicleLogController::class, 'show']);
 Route::post('/pee-log', [PEELogControler::class, 'storePpeLogAndNotify']);
 Route::get('/pee-log/all', [PEELogControler::class, 'index']);
 Route::get('/pee-log/{id}', [PEELogControler::class, 'show']);
+
+Route::post('/speed-violations-log', [SpeedViolationController::class, 'storeSpeedViolationAndNotify']);
+Route::get('/speed-violations', [SpeedViolationController::class, 'index']);
+Route::get('/speed-violations/{id}', [SpeedViolationController::class, 'show']);
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
 
