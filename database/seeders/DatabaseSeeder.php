@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        // $this->call([
-        //     PPESeeder::class,
-        //     CameraSeeder::class,    
-        //     WorkerSeeder::class,
-        // ]);
+        $this->call([
+            PPESeeder::class,
+            CameraSeeder::class,    
+            WorkerSeeder::class,
+        ]);
     }
 }

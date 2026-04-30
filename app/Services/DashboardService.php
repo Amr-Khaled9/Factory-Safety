@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\AreaLog;
+use App\Models\FireLog;
 use App\Models\PPELog;
+use App\Models\SpeedViolation;
 use App\Models\VehicleLog;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,40 +18,17 @@ class DashboardService
 
         $ppeLog = PPELog::whereDate('created_at', $today)->count();
         $vehicleLog = VehicleLog::whereDate('created_at', $today)->count();
-        $areaLog = AreaLog::whereDate('created_at', $today)->count();
+        $speedLog = SpeedViolation::whereDate('created_at', $today)->count();
+        $fireLog = FireLog::whereDate('created_at', $today)->count();
 
-        $accidentCount = $ppeLog + $vehicleLog + $areaLog;
-        return $accidentCount;
-    }
-
-    public function getAreaWithMostViolations()
-    {
-        $area = AreaLog::select('area_id', DB::raw('COUNT(*) as total'))
-            ->groupBy('area_id')
-            ->orderByDesc('total')
-            ->with('area:id,name')
-            ->first();
-
-        if (!$area || !$area->area) {
-            return [
-                'title' => 'Area with Most Violations',
-                'area'  => null,
-                'total' => 0,
-            ];
-        }
-
-        return [
-            'title' => 'Area with Most Violations',
-            'area'  => $area->area->name,
-            'total' => $area->total,
-        ];
+        return $ppeLog + $vehicleLog + $speedLog + $fireLog;
     }
 
     public function getRealTimeAlerts()
     {
         $ppeLogs = PPELog::with(['worker', 'pees'])
-            ->latest()       
-            ->take(2)       
+            ->latest()
+            ->take(2)
             ->get();
 
         $vehicleLogs = VehicleLog::with(['vehicle', 'camera'])
@@ -57,25 +36,33 @@ class DashboardService
             ->take(2)
             ->get();
 
-        $areaLog = AreaLog::with(['area', 'camera', 'worker'])
-            ->latest()
-            ->first();
+        $speedLogs = SpeedViolation::latest()
+            ->take(2)
+            ->get();
 
-        return [/*  */
-            'title'        => 'Real Time Alerts',
-            'ppe_log'      => $ppeLogs,
-            'vehicle_log'  => $vehicleLogs,
-            'area_log'     => $areaLog,
+        $fireLogs = FireLog::latest()
+            ->take(2)
+            ->get();
+
+        return [
+            'title'         => 'Real Time Alerts',
+            'ppe_log'       => $ppeLogs,
+            'vehicle_log'   => $vehicleLogs,
+            'speed_log'     => $speedLogs,
+            'fire_log'      => $fireLogs,
         ];
     }
-
-
 
     public function getDailySafetyCompliance()
     {
         $today = Carbon::today();
 
-        $tables = ['ppe_logs', 'vehicle_logs', 'area_logs'];
+        $tables = [
+            'ppe_logs',
+            'vehicle_logs',
+            'speed_violations',
+            'fire_logs'
+        ];
 
         $totalAll = 0;
         $totalToday = 0;
