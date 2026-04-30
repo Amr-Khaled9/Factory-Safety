@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('fire_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->enum('type', ['fire', 'smoke', 'other']);
+            $table->float('confidence');
             $table->string('image')->nullable();
+            $table->string('number_camera')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('fire_logs');
     }
 };

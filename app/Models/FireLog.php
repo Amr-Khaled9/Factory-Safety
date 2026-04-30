@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Machine extends Model
+class FireLog extends Model
 {
     protected $fillable = [
-        'name',
         'type',
+        'confidence',
         'image',
-        'location'
+        'number_camera'
     ];
 }
