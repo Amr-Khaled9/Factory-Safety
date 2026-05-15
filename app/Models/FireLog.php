@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class FireLog extends Model
@@ -12,4 +13,11 @@ class FireLog extends Model
         'image',
         'number_camera'
     ];
+
+
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->timezone('Africa/Cairo')
+            ->format('Y-m-d H:i:s');
+    }
 }

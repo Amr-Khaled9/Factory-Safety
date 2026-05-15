@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class PPELog extends Model
 {
-    //
+
     protected $table = "ppe_logs";
     protected $fillable = [
         'image',
@@ -31,5 +32,11 @@ class PPELog extends Model
     public function notifications(): MorphMany
     {
         return $this->morphMany(Notification::class, 'notifiable');
+    }
+
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->timezone('Africa/Cairo')
+            ->format('Y-m-d H:i:s');
     }
 }
