@@ -73,3 +73,39 @@ if (chartElement && window.chartData) {
         }
     });
 }
+
+/* =========================
+   Reports page
+========================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const fill = document.querySelector(".fill");
+
+    if (fill) {
+        const width = fill.style.width;
+        setTimeout(() => {
+            fill.style.width = width;
+        }, 200);
+    }
+
+});
+
+
+function showDaily() {
+
+    document.getElementById("daily").style.display = "block";
+    document.getElementById("weekly").style.display = "none";
+
+    document.getElementById("dailyBtn").classList.add("active");
+    document.getElementById("weeklyBtn").classList.remove("active");
+}
+
+function showWeekly() {
+
+    document.getElementById("daily").style.display = "none";
+    document.getElementById("weekly").style.display = "block";
+
+    document.getElementById("weeklyBtn").classList.add("active");
+    document.getElementById("dailyBtn").classList.remove("active");
+}

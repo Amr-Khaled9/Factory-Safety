@@ -10,18 +10,17 @@
 
       <ul class="menu">
           <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-              <i class="fa-solid fa-table-columns"></i>
-              Dashboard
+              <a href="{{ route('dashboard') }}">
+                  <i class="fa-solid fa-table-columns"></i>
+                  Dashboard
+              </a>
           </li>
 
-          <li>
-              <i class="fa-regular fa-map"></i>
-              Factory Map
-          </li>
-
-          <li>
-              <i class="fa-regular fa-clipboard"></i>
-              Safety Reports
+          <li class="{{ request()->routeIs('reports.index') ? 'active' : '' }}">
+              <a href="{{ route('reports.index') }}">
+                  <i class="fa-regular fa-clipboard"></i>
+                  Safety Reports
+              </a>
           </li>
 
           <li>
