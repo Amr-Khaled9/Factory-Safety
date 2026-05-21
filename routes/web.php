@@ -1,14 +1,17 @@
 <?php
 
-use App\Http\Controllers\Api\auth\GoogleController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Web\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('guest:web')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('web.login');
 });
-Route::get('/google/redirect', [GoogleController::class, 'redirect'])    ->middleware('web');
-Route::get('/google/callback', [GoogleController::class, 'callback'])    ->middleware('web');
 
+Route::middleware('auth:web')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('web.logout');
 
- 
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
