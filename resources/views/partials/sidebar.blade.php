@@ -23,9 +23,11 @@
               </a>
           </li>
 
-          <li>
-              <i class="fa-solid fa-gear"></i>
-              Settings
+          <li class="{{ request()->routeIs('settings') ? 'active' : '' }}">
+              <a href="{{ route('settings') }}">
+                  <i class="fa-solid fa-gear"></i>
+                  Settings
+              </a>
           </li>
       </ul>
 

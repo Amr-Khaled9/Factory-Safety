@@ -17,4 +17,9 @@ Route::middleware('auth:web')->group(function () {
         ->name('dashboard');
     Route::get('/reports', [ReportController::class, 'index'])
         ->name('reports.index');
+    Route::get('/settings', function () {
+        return view('settings.index', [
+            'user' => auth()->user()
+        ]);
+    })->name('settings');
 });
