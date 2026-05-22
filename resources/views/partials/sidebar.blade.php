@@ -41,14 +41,11 @@
               </a>
           </li>
 
-          <li>
-              <i class="fa-solid fa-border-all"></i>
-              Restricted Areas
-          </li>
-
-          <li>
-              <i class="fa-solid fa-door-open"></i>
-              Gate Monitoring
+          <li class="{{ request()->routeIs('gate.*') ? 'active' : '' }}">
+              <a href="{{ route('gate.index') }}">
+                  <i class="fa-solid fa-door-open"></i>
+                  Gate Monitoring
+              </a>
           </li>
       </ul>
   </aside>

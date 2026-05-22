@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\GateController;
 use App\Http\Controllers\Web\PpeController;
 use App\Http\Controllers\Web\ReportController;
 use App\Http\Controllers\Web\VestController;
@@ -30,4 +31,10 @@ Route::middleware('auth:web')->group(function () {
 
     Route::get('/detections/{id}', [PpeController::class, 'show'])
         ->name('detections.show');
+
+    Route::get('/gate', [GateController::class, 'index'])
+        ->name('gate.index');
+
+    Route::get('/gate/{id}', [GateController::class, 'show'])
+        ->name('gate.show');
 });
