@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\PpeController;
 use App\Http\Controllers\Web\ReportController;
+use App\Http\Controllers\Web\VestController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:web')->group(function () {
@@ -22,4 +24,10 @@ Route::middleware('auth:web')->group(function () {
             'user' => auth()->user()
         ]);
     })->name('settings');
+
+    Route::get('/ppe', [PpeController::class, 'index'])
+        ->name('ppe.index');
+
+    Route::get('/detections/{id}', [PpeController::class, 'show'])
+        ->name('detections.show');
 });

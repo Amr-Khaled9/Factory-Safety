@@ -109,3 +109,30 @@ function showWeekly() {
     document.getElementById("weeklyBtn").classList.add("active");
     document.getElementById("dailyBtn").classList.remove("active");
 }
+
+
+const vestBtn = document.getElementById("vestBtn");
+const helmetBtn = document.getElementById("helmetBtn");
+
+const vestSection = document.getElementById("vestSection");
+const helmetSection = document.getElementById("helmetSection");
+
+vestBtn.addEventListener("click", () => {
+
+    vestBtn.classList.add("active");
+    helmetBtn.classList.remove("active");
+
+    vestSection.style.display = "grid";
+    helmetSection.style.display = "none";
+
+});
+
+helmetBtn.addEventListener("click", () => {
+
+    helmetBtn.classList.add("active");
+    vestBtn.classList.remove("active");
+
+    helmetSection.style.display = "grid";
+    vestSection.style.display = "none";
+
+});

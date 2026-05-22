@@ -34,14 +34,11 @@
       <div class="menu-title">DETECTION MODULES</div>
 
       <ul class="menu">
-          <li>
-              <i class="fa-solid fa-hard-hat"></i>
-              Helmet Detection
-          </li>
-
-          <li>
-              <i class="fa-solid fa-user-check"></i>
-              Vest Detection
+          <li class="{{ request()->routeIs('ppe.*') ? 'active' : '' }}">
+              <a href="{{ route('ppe.index') }}">
+                  <i class="fa-solid fa-hard-hat"></i>
+                  PPE Detection
+              </a>
           </li>
 
           <li>
