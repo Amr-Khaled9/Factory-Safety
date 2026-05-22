@@ -45,14 +45,26 @@ class PEELogControler extends Controller
                         $notificationTitle,
                         $notificationMessage,
                     );
-                    $user->notify(
-                        new PEELogNotification(
-                            $notificationTitle,
-                            $notificationMessage,
-                            $peeLog
-                        )
-                    );
                 }
+
+                $user->notify(
+                    new PEELogNotification(
+                        $notificationTitle,
+                        $notificationMessage,
+                        $peeLog
+                    )
+                );
+            }
+
+            $users1 = User::all();
+            foreach ($users1 as $user1) {
+                $user1->notify(
+                    new PEELogNotification(
+                        $notificationTitle,
+                        $notificationMessage,
+                        $peeLog
+                    )
+                );
             }
             return response()->json([
                 'status'  => 'success',
