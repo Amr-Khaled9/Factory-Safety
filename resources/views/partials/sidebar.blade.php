@@ -48,4 +48,27 @@
               </a>
           </li>
       </ul>
+      @if(auth()->user()->role == 'admin')
+      <!-- MANAGEMENT -->
+      <div class="menu-title">MANAGEMENT</div>
+
+      <ul class="menu">
+
+          <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}">
+              <a href="{{ route('users.index') }}">
+                  <i class="fa-solid fa-users"></i>
+                  Users Management
+              </a>
+          </li>
+
+          <li class="{{ request()->routeIs('vehicles.*') ? 'active' : '' }}">
+              <a href="{{ route('vehicles.index') }}">
+                  <i class="fa-solid fa-car"></i>
+                  Vehicles Management
+              </a>
+          </li>
+
+      </ul>
+
+      @endif
   </aside>
