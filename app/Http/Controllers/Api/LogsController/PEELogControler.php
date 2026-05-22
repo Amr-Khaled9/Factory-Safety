@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PEELogRequest;
 use App\Models\PPELog;
 use App\Models\User;
+use App\Notifications\PEELogNotification;
 use App\Services\FcmService;
 use App\Services\PEELogServices;
 use Illuminate\Support\Facades\DB;
@@ -34,18 +35,22 @@ class PEELogControler extends Controller
             $notificationTitle = 'Worker Detected Without PPE';
             $notificationMessage = "PPE {$ppeType} is not being worn by the worker.";
 
-            //$this->pEELogServices->notifyAdmins($peeLog, $notificationTitle, $notificationMessage);
-            // احصل على المستخدمين الذين لديهم توكن وقم بالتحميل المسبق
             $users = User::whereHas('fcmToken')->with('fcmToken')->get();
 
             foreach ($users as $user) {
-                // هنا، $user->fcmToken هو كائن واحد (أو null، لكن whereHas ضمنت وجوده)
-                // لا يزال من الجيد إضافة تحقق
+
                 if ($user->fcmToken && $user->fcmToken->fcm_token) {
                     $this->fcmService->sendNotification(
                         $user->fcmToken->fcm_token,
                         $notificationTitle,
                         $notificationMessage,
+                    );
+                    $user->notify(
+                        new PEELogNotification(
+                            $notificationTitle,
+                            $notificationMessage,
+                            $peeLog
+                        )
                     );
                 }
             }

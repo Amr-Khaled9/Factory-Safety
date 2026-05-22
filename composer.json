@@ -20,7 +20,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.23",
         "laravel/telescope": "^5.17",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "livewire/livewire": "^4.3"
     },
     "require-dev": {
         "dedoc/scramble": "^0.13.14",

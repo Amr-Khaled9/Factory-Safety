@@ -68,7 +68,7 @@ class VehicleDetectionService
             }
 
 
-            //$this->notifyAdmins($vehicleLog);
+            $this->notifyAdmins($vehicleLog);
 
             return [
                 'status'  => 'success',
@@ -125,13 +125,17 @@ class VehicleDetectionService
 
     private function notifyAdmins(VehicleLog $vehicleLog): void
     {
-        $admins = User::role('admin', 'api')->get();
+        $admins = User::get();
 
         foreach ($admins as $admin) {
+            $title = 'Unauthorized Vehicle Detected';
+
+            $message = "Vehicle [{$vehicleLog->license_plate}] entered and is NOT authorized.";
+            // Database + Broadcast
             $admin->notify(
                 new VehicleLogNotification(
-                    'Unauthorized Vehicle Detected',
-                    "Vehicle [{$vehicleLog->license_plate}] entered and is NOT authorized.",
+                    $title,
+                    $message,
                     $vehicleLog
                 )
             );

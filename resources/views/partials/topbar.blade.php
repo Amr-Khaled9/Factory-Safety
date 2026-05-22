@@ -11,14 +11,7 @@
 
         <!-- Notifications -->
         <div class="notification-box">
-
-            <button class="notification-btn">
-                <i class="fa-regular fa-bell"></i>
-
-                <!-- Notification Count -->
-                <span class="notification-count">3</span>
-            </button>
-
+            <livewire:notifications-dropdown wire:poll.1s />
         </div>
 
         <!-- User Dropdown -->

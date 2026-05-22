@@ -3,15 +3,17 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Fcm\FcmChannel;
 use NotificationChannels\Fcm\FcmMessage;
 use NotificationChannels\Fcm\Resources\Notification as FcmNotification;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 
-class VehicleLogNotification extends Notification
+class VehicleLogNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
@@ -33,7 +35,7 @@ class VehicleLogNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database', FcmChannel::class];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -79,5 +81,15 @@ class VehicleLogNotification extends Notification
             'pee_log_id'  => $this->vehicleLog->id,
             'type'        => 'vehicle_log',
         ];
+    }
+
+    public function toBroadcast($notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'title' => $this->title,
+            'message' => $this->message,
+            'type' => 'vehicle_log',
+            'vehicle_log_id' => $this->vehicleLog->id,
+        ]);
     }
 }

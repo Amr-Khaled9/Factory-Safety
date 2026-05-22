@@ -13,6 +13,11 @@
     <!-- Font Awesome -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    @livewireStyles
+
+    <link rel="stylesheet"
+        href="{{ asset('css/notifications.css') }}">
 </head>
 
 <body>
@@ -32,7 +37,7 @@
     </main>
 
     <script src="{{ asset('js/script.js') }}"></script>
-
+    @livewireScripts
 </body>
 
 </html>

@@ -1371,3 +1371,86 @@ h1 {
 .info-item strong {
     color: white;
 }
+
+.notification-wrapper {
+    position: relative;
+}
+
+.notifications-dropdown {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 360px;
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 18px;
+    overflow: hidden;
+    z-index: 999;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .35);
+}
+
+.dropdown-header {
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #1f2937;
+}
+
+.dropdown-header h3 {
+    color: white;
+    font-size: 18px;
+}
+
+.mark-read-btn {
+    background: #2563eb;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.notification-item {
+    padding: 16px 18px;
+    border-bottom: 1px solid #1f2937;
+    transition: .2s;
+}
+
+.notification-item:hover {
+    background: #1f2937;
+}
+
+.notification-content h4 {
+    color: white;
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+.notification-content p {
+    color: #9ca3af;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.empty-notifications {
+    padding: 30px;
+    text-align: center;
+    color: #9ca3af;
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
