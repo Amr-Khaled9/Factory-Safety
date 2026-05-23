@@ -136,3 +136,16 @@ helmetBtn.addEventListener("click", () => {
     vestSection.style.display = "none";
 
 });
+
+function confirmDelete(event) {
+
+    event.preventDefault();
+
+    const confirmed = confirm(
+        'Are you sure you want to delete this vehicle?'
+    );
+
+    if (confirmed) {
+        event.target.submit();
+    }
+}

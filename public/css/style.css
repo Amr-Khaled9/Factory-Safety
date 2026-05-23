@@ -1698,3 +1698,282 @@ h1 {
     margin-bottom: 20px;
     font-weight: 500;
 }
+
+.vehicle-form-page {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.vehicle-card {
+    width: 100%;
+    max-width: 700px;
+
+    background: #111827;
+
+    border: 1px solid #1f2937;
+
+    border-radius: 20px;
+
+    padding: 30px;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.top-header h1 {
+    color: white;
+    font-size: 30px;
+}
+
+.back-btn {
+    background: #2563eb;
+    color: white;
+
+    padding: 10px 16px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+}
+
+.vehicle-preview {
+    width: 100%;
+    height: 350px;
+
+    object-fit: cover;
+
+    border-radius: 16px;
+
+    margin-bottom: 25px;
+}
+
+.details-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.detail-box {
+    background: #1f2937;
+
+    padding: 18px;
+
+    border-radius: 14px;
+}
+
+.detail-box span {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.detail-box h3 {
+    color: white;
+    margin-top: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    color: white;
+
+    margin-bottom: 10px;
+
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+
+    background: #1f2937;
+
+    border: 1px solid #374151;
+
+    border-radius: 12px;
+
+    padding: 14px;
+
+    color: white;
+}
+
+.save-btn {
+    width: 100%;
+
+    border: none;
+
+    background: #2563eb;
+
+    color: white;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.error-box {
+    background: #7f1d1d;
+
+    color: #fecaca;
+
+    padding: 16px;
+
+    border-radius: 12px;
+
+    margin-bottom: 20px;
+}
+
+.current-image-box {
+    margin-bottom: 25px;
+}
+
+.current-image-title {
+    color: #d1d5db;
+    margin-bottom: 12px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.current-vehicle-image {
+    width: 100%;
+    max-height: 300px;
+
+    object-fit: cover;
+
+    border-radius: 16px;
+
+    border: 1px solid #374151;
+}
+
+.image-preview-box {
+    display: none;
+
+    margin-bottom: 25px;
+}
+
+.preview-title {
+    color: #d1d5db;
+
+    margin-bottom: 12px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+.preview-image {
+    width: 100%;
+
+    max-height: 320px;
+
+    object-fit: cover;
+
+    border-radius: 16px;
+
+    border: 1px solid #374151;
+}
+
+
+/* PAGINATION */
+
+.pagination {
+    margin-top: 30px;
+
+    display: flex;
+
+    justify-content: center;
+}
+
+.pagination nav {
+    display: flex;
+
+    justify-content: center;
+}
+
+.pagination ul {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+}
+
+.pagination li {
+    list-style: none;
+}
+
+.pagination li a,
+.pagination li span {
+    min-width: 42px;
+
+    height: 42px;
+
+    padding: 0 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #1f2937;
+
+    border: 1px solid #374151;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition: 0.3s;
+}
+
+.pagination li a:hover {
+    background: #2563eb;
+
+    border-color: #2563eb;
+}
+
+.pagination li.active span,
+.pagination [aria-current="page"] span {
+    background: #2563eb !important;
+
+    border-color: #2563eb !important;
+
+    color: white !important;
+}
+
+.pagination li.disabled span {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+.pagination svg {
+    width: 18px;
+
+    height: 18px;
+}

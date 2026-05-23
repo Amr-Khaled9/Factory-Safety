@@ -18,6 +18,8 @@
 
     <link rel="stylesheet"
         href="{{ asset('css/notifications.css') }}">
+
+
 </head>
 
 <body>

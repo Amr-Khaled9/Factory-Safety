@@ -26,7 +26,7 @@ class CreateVehiclRequest extends FormRequest
             'license_plate'  => 'required|string|min:7|max:10',
             'image'          => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'number_camera'  => 'nullable|integer|min:1',
-            'vehicle_type' => 'required|string|in:car,bike,truck',
+            'vehicle_type' => 'required|string|in:car,truck',
         ];
     }
 

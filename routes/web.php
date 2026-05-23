@@ -56,17 +56,3 @@ Route::middleware('admin')->group(function () {
         [VehicleManagementController::class, 'unauthorized']
     )->name('vehicles.unauthorized');
 });
-Route::get('/test-notification', function () {
-
-    $user = \App\Models\User::find(7);
-
-    $user->notify(
-        new \App\Notifications\PEELogNotification(
-            'Test Title',
-            'Test Message',
-            (object)['id' => 1]
-        )
-    );
-
-    return 'done';
-});
