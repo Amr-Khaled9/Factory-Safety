@@ -117,25 +117,29 @@ const helmetBtn = document.getElementById("helmetBtn");
 const vestSection = document.getElementById("vestSection");
 const helmetSection = document.getElementById("helmetSection");
 
-vestBtn.addEventListener("click", () => {
+if (vestBtn) {
+    vestBtn.addEventListener("click", () => {
 
-    vestBtn.classList.add("active");
-    helmetBtn.classList.remove("active");
+        vestBtn.classList.add("active");
+        helmetBtn.classList.remove("active");
 
-    vestSection.style.display = "grid";
-    helmetSection.style.display = "none";
+        vestSection.style.display = "grid";
+        helmetSection.style.display = "none";
 
-});
+    });
+}
 
-helmetBtn.addEventListener("click", () => {
+if (helmetBtn) {
+    helmetBtn.addEventListener("click", () => {
 
-    helmetBtn.classList.add("active");
-    vestBtn.classList.remove("active");
+        helmetBtn.classList.add("active");
+        vestBtn.classList.remove("active");
 
-    helmetSection.style.display = "grid";
-    vestSection.style.display = "none";
+        helmetSection.style.display = "grid";
+        vestSection.style.display = "none";
 
-});
+    });
+}
 
 function confirmDelete(event) {
 
@@ -149,3 +153,49 @@ function confirmDelete(event) {
         event.target.submit();
     }
 }
+
+function initEchoListener() {
+    if (window.authUserId && window.Echo) {
+        console.log("Echo is ready! Subscribing to channel...");
+        window.Echo
+            .private(`App.Models.User.${window.authUserId}`)
+            .notification((notification) => {
+
+                if ("Notification" in window) {
+                    if (Notification.permission === "granted") {
+                        new Notification(notification.title || 'New Notification', {
+                            body: notification.message || '',
+                        });
+                    } else if (Notification.permission !== "denied") {
+                        Notification.requestPermission().then(permission => {
+                            if (permission === "granted") {
+                                new Notification(notification.title || 'New Notification', {
+                                    body: notification.message || '',
+                                });
+                            }
+                        });
+                    }
+                }
+
+                const domAudio = document.getElementById('alarm-audio');
+                console.log("تلقينا الإشعار! هل عنصر الصوت موجود في الصفحة؟", !!domAudio);
+                if (domAudio) {
+                    domAudio.currentTime = 0;
+                    domAudio.play()
+                        .then(() => console.log("✅ تم تشغيل الصوت بنجاح"))
+                        .catch(e => console.error("❌ فشل تشغيل الصوت (الغالب أن المتصفح منعه):", e));
+                }
+
+            });
+    } else if (window.authUserId) {
+        // Echo is not yet defined because Vite module is still loading
+        setTimeout(initEchoListener, 500);
+    }
+}
+initEchoListener();
+
+document.addEventListener('click', () => {
+    if ("Notification" in window && Notification.permission !== "denied" && Notification.permission !== "granted") {
+        Notification.requestPermission();
+    }
+}, { once: true });

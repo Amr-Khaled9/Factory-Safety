@@ -14,8 +14,21 @@ class NotificationsDropdown extends Component
         $this->loadNotifications();
     }
 
+    public $unreadCount = 0;
+    public $isLoaded = false;
+
     public function loadNotifications()
     {
+        $newCount = Auth::user()->unreadNotifications()->count();
+
+        // If the count increases, it means a new notification arrived!
+        if ($this->isLoaded && $newCount > $this->unreadCount) {
+            $this->dispatch('play-sound');
+        }
+        
+        $this->unreadCount = $newCount;
+        $this->isLoaded = true;
+
         $this->notifications = Auth::user()
             ->unreadNotifications
             ->take(10)
