@@ -1977,3 +1977,33 @@ h1 {
 
     height: 18px;
 }
+
+.danger-alert {
+
+    width: 100%;
+
+    background: #991b1b;
+
+    color: white;
+
+    padding: 18px;
+
+    border-radius: 14px;
+
+    margin-bottom: 15px;
+
+    cursor: pointer;
+
+    border-left: 5px solid #ef4444;
+
+    animation: slideDown .4s ease;
+
+}
+
+.danger-alert p {
+
+    margin-top: 5px;
+
+    color: #fecaca;
+
+}

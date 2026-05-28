@@ -5,7 +5,7 @@
 @section('content')
 
 <section class="dashboard">
-
+    <livewire:realtime-danger-alert />
     <!-- Title -->
     <div class="title">
         <h1>Overview Dashboard</h1>
