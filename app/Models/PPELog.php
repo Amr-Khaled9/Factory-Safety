@@ -39,4 +39,8 @@ class PPELog extends Model
         return $date->timezone('Africa/Cairo')
             ->format('Y-m-d H:i:s');
     }
+    public function ppe()
+    {
+        return $this->belongsTo(PPE::class, 'ppe_id');
+    }
 }
