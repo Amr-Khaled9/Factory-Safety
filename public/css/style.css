@@ -2007,3 +2007,154 @@ h1 {
     color: #fecaca;
 
 }
+
+
+/* svg */
+
+.pagination-wrapper svg {
+    width: 16px;
+    height: 16px;
+}
+
+
+/* =========================
+   SEARCH INPUT
+========================= */
+
+.search-box {
+    margin-bottom: 25px;
+}
+
+.search-input {
+    width: 100%;
+    max-width: 450px;
+
+    padding: 14px 18px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: .3s;
+}
+
+.search-input:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 4px rgba(37, 99, 235, .12);
+}
+
+/* =========================
+   PAGINATION LOG
+========================= */
+
+.pagination-log {
+    margin-top: 30px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-log nav {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-log nav>div:first-child {
+    display: none;
+}
+
+.pagination-log ul {
+    display: flex;
+
+    padding-left: 0;
+
+    margin: 0;
+
+    list-style: none;
+}
+
+.pagination-log li {
+    list-style: none;
+}
+
+.pagination-log a,
+.pagination-log span {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 40px;
+    height: 40px;
+
+    padding: 0 14px;
+
+    background: #fff;
+
+    color: #0d6efd;
+
+    text-decoration: none;
+
+    border: 1px solid #dee2e6;
+
+    transition: .15s ease-in-out;
+}
+
+.pagination-log li:first-child a,
+.pagination-log li:first-child span {
+    border-radius: 6px 0 0 6px;
+}
+
+.pagination-log li:last-child a,
+.pagination-log li:last-child span {
+    border-radius: 0 6px 6px 0;
+}
+
+.pagination-log a:hover {
+
+    z-index: 2;
+
+    background: #e9ecef;
+
+    color: #0a58ca;
+
+    border-color: #dee2e6;
+}
+
+.pagination-log .active span,
+.pagination-log [aria-current="page"] span {
+
+    z-index: 3;
+
+    color: #fff !important;
+
+    background: #0d6efd !important;
+
+    border-color: #0d6efd !important;
+}
+
+.pagination-log .disabled span {
+
+    color: #6c757d;
+
+    background: #fff;
+
+    border-color: #dee2e6;
+
+    cursor: not-allowed;
+}
+
+.pagination-log svg {
+
+    width: 14px;
+
+    height: 14px;
+}

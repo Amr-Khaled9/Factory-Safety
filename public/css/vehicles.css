@@ -322,10 +322,3 @@
     background: #f8f9fa;
     color: #6c757d;
 }
-
-/* svg */
-
-.pagination-wrapper svg {
-    width: 16px;
-    height: 16px;
-}
