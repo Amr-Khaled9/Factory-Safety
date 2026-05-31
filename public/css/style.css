@@ -45,14 +45,20 @@ body {
 }
 
 .menu li {
-    padding: 14px;
     border-radius: 10px;
     margin-bottom: 8px;
+    cursor: pointer;
+    color: #444;
+}
+
+.menu li a {
     display: flex;
     align-items: center;
     gap: 10px;
-    cursor: pointer;
-    color: #444;
+    width: 100%;
+    padding: 14px;
+    text-decoration: none;
+    color: inherit;
 }
 
 .menu li:hover {
