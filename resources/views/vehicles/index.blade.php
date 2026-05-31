@@ -215,7 +215,7 @@
     </div>
 
     {{-- PAGINATION --}}
-    <div class="pagination-wrapper">
+    <div class="pagination">
 
         {{ $vehicles->links() }}
 

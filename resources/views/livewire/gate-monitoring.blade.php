@@ -73,7 +73,7 @@
         @endforeach
 
     </div>
-    <div class="pagination-log">
+    <div class="pagination">
         {{ $logs->links() }}
     </div>
 
