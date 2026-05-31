@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>@yield('title')</title>
-
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
@@ -38,7 +38,7 @@
     </main>
 
     <script>
-        window.authUserId = @json(auth()->id() ?? null);
+        window.authUserId = @json(auth() -> id() ?? null);
         window.alarmSoundUrl = "{{ asset('sounds/alarm.mp3') }}";
     </script>
     <script src="{{ asset('js/script.js') }}?v={{ time() }}"></script>
