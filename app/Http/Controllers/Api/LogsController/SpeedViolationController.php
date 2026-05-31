@@ -63,7 +63,7 @@ class SpeedViolationController extends Controller
 
     public function index()
     {
-        $violations = SpeedViolation::orderByDesc('created_at')->get();
+        $violations = SpeedViolation::orderByDesc('created_at')->paginate(15);
 
         return response()->json([
             'status'  => 'success',

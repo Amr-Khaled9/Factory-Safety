@@ -61,7 +61,7 @@ class FireLogController extends Controller
 
     public function index()
     {
-        $logs = FireLog::orderByDesc('created_at')->get();
+        $logs = FireLog::orderByDesc('created_at')->paginate(15);
 
         return response()->json([
             'status'  => 'success',

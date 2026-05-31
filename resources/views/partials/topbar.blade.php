@@ -36,16 +36,6 @@
             <!-- Dropdown Menu -->
             <div class="dropdown-menu" id="dropdownMenu">
 
-                <a href="#">
-                    <i class="fa-regular fa-user"></i>
-                    Profile
-                </a>
-
-                <a href="#">
-                    <i class="fa-solid fa-gear"></i>
-                    Settings
-                </a>
-
                 <form action="{{ route('web.logout') }}" method="POST">
                     @csrf
 

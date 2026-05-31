@@ -88,14 +88,14 @@ class PEELogControler extends Controller
                 $q->where('ppe_type', 'veste');
             })
             ->orderByDesc('created_at')
-            ->get();
+            ->paginate(15);
 
         $helmetLogs = PPELog::with(['camera', 'pees', 'worker'])
             ->whereHas('pees', function ($q) {
                 $q->where('ppe_type', 'helmet');
             })
             ->orderByDesc('created_at')
-            ->get();
+            ->paginate(15);
 
         return response()->json([
             'status'  => 'success',
