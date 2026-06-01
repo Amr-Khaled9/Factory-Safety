@@ -41,14 +41,19 @@
         @forelse($notifications as $notification)
 
         @php
+        $data = $notification['data'] ?? [];
         $url = '#';
 
-        if (($notification['data']['type'] ?? null) === 'vehicle_log') {
-        $url = route('gate.show', $notification['data']['vehicle_log_id']);
+        if (($data['type'] ?? null) === 'vehicle_log') {
+        $url = isset($data['pee_log_id'])
+        ? route('gate.show', $data['pee_log_id'])
+        : '#';
         }
 
-        if (($notification['data']['type'] ?? null) === 'pee_log') {
-        $url = route('detections.show', $notification['data']['pee_log_id']);
+        if (($data['type'] ?? null) === 'pee_log') {
+        $url = isset($data['pee_log_id'])
+        ? route('detections.show', $data['pee_log_id'])
+        : '#';
         }
         @endphp
 
