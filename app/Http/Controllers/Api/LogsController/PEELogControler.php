@@ -26,7 +26,7 @@ class PEELogControler extends Controller
 
         $response = DB::transaction(function () use ($request) {
 
-            $imagePath = $this->pEELogServices->upload($request->image);
+            $imagePath = $this->pEELogServices->uploadLocal($request->image);
 
             $peeLog = $this->pEELogServices->create($request, $imagePath);
             $ppeType = strtolower($request->type);

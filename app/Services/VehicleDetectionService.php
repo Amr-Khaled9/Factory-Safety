@@ -36,7 +36,7 @@ class VehicleDetectionService
     {
         return DB::transaction(function () use ($data) {
 
-            $imageUrl = $this->uploadImage($data['image']);
+            $imageUrl = $this->uploadLocal($data['image']);
 
             $vehicle = Vehicle::create([
                 'license_plate' => $data['license_plate'],
@@ -121,6 +121,15 @@ class VehicleDetectionService
         );
 
         return $result['secure_url'];
+    }
+
+    public function uploadLocal($image): string
+    {
+        $fileName = 'vehicle_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+        $path = $image->storeAs('uploads', $fileName, 'public');
+
+        return asset('storage/' . $path);
     }
 
     private function notifyAdmins(VehicleLog $vehicleLog): void

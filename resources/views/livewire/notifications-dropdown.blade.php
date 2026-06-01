@@ -40,7 +40,19 @@
 
         @forelse($notifications as $notification)
 
-        <div class="notification-item">
+        @php
+        $url = '#';
+
+        if (($notification['data']['type'] ?? null) === 'vehicle_log') {
+        $url = route('gate.show', $notification['data']['vehicle_log_id']);
+        }
+
+        if (($notification['data']['type'] ?? null) === 'pee_log') {
+        $url = route('detections.show', $notification['data']['pee_log_id']);
+        }
+        @endphp
+
+        <a href="{{ $url }}" class="notification-item">
 
             <div class="notification-content">
 
@@ -54,7 +66,7 @@
 
             </div>
 
-        </div>
+        </a>
 
         @empty
 

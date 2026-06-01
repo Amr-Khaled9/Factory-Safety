@@ -29,6 +29,15 @@ class PEELogServices
         return $result['secure_url'];
     }
 
+    public function uploadLocal($image): string
+    {
+        $fileName = 'ppe_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+        $path = $image->storeAs('uploads', $fileName, 'public');
+
+        return asset('storage/' . $path);
+    }
+
     public function create($request, $imagePath): PPELog
     {
         $type = PPE::where('ppe_type', $request->type)->first();
