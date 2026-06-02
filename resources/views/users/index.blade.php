@@ -4,34 +4,36 @@
 
 @section('content')
 
-<section class="users-page">
+<section class="p-4">
 
     <!-- HEADER -->
-    <div class="page-header">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
 
         <div>
-            <h1>Users Management</h1>
-            <p>Manage system users and permissions</p>
+            <h1 class="fw-bold">Users Management</h1>
+            <p class="text-muted mb-0">Manage system users and permissions</p>
         </div>
 
-        <a href="{{ route('users.create') }}" class="create-btn">
+        <a href="{{ route('users.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
             <i class="fa-solid fa-plus"></i>
             Add User
         </a>
 
     </div>
+
     {{-- Success Message --}}
     @if(session('success'))
-    <div class="alert success-alert">
+    <div class="alert alert-success rounded-3">
         {{ session('success') }}
     </div>
     @endif
+
     <!-- TABLE -->
-    <div class="table-container">
+    <div class="table-dark-container rounded-4 overflow-hidden">
 
-        <table class="users-table">
+        <table class="table table-dark table-hover mb-0 align-middle">
 
-            <thead>
+            <thead class="table-header-dark">
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
@@ -55,38 +57,41 @@
                     <td>{{ $user->email }}</td>
 
                     <td>
-                        <span class="role {{ $user->role }}">
-                            {{ $user->role }}
-                        </span>
+                        @if($user->role === 'admin')
+                        <span class="badge bg-danger rounded-pill px-3 py-2">{{ $user->role }}</span>
+                        @else
+                        <span class="badge bg-primary rounded-pill px-3 py-2">{{ $user->role }}</span>
+                        @endif
                     </td>
 
                     <td>{{ $user->created_at->format('d M Y') }}</td>
 
-                    <td class="actions">
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
 
-                        <a href="{{ route('users.show', $user) }}">
-                            <i class="fa-solid fa-eye"></i>
-                        </a>
+                            <a href="{{ route('users.show', $user) }}" class="text-white">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
 
-                        <a href="{{ route('users.edit', $user) }}">
-                            <i class="fa-solid fa-pen"></i>
-                        </a>
+                            <a href="{{ route('users.edit', $user) }}" class="text-white">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
 
+                            <form
+                                action="{{ route('users.destroy', $user->id) }}"
+                                method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this user?')">
 
-                        <form
-                            action="{{ route('users.destroy', $user->id) }}"
-                            method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this user?')">
+                                @csrf
+                                @method('DELETE')
 
-                            @csrf
-                            @method('DELETE')
+                                <button type="submit" class="btn btn-link text-danger p-0">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
 
-                            <button type="submit" class="delete-btn">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                            </form>
 
-                        </form>
-
+                        </div>
                     </td>
 
                 </tr>
@@ -99,7 +104,7 @@
 
     </div>
 
-    <div class="pagination">
+    <div class="d-flex justify-content-center mt-4">
         {{ $users->links() }}
     </div>
 

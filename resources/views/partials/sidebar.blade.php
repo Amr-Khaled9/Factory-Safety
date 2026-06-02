@@ -8,7 +8,7 @@
 
       <div class="menu-title">MAIN MENU</div>
 
-      <ul class="menu">
+      <ul class="menu p-0">
           <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
               <a href="{{ route('dashboard') }}">
                   <i class="fa-solid fa-table-columns"></i>
@@ -33,7 +33,7 @@
 
       <div class="menu-title">DETECTION MODULES</div>
 
-      <ul class="menu">
+      <ul class="menu p-0">
           <li class="{{ request()->routeIs('ppe.*') ? 'active' : '' }}">
               <a href="{{ route('ppe.index') }}">
                   <i class="fa-solid fa-hard-hat"></i>
@@ -52,7 +52,7 @@
       <!-- MANAGEMENT -->
       <div class="menu-title">MANAGEMENT</div>
 
-      <ul class="menu">
+      <ul class="menu p-0">
 
           <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}">
               <a href="{{ route('users.index') }}">

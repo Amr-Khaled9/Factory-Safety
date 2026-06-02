@@ -7,16 +7,20 @@
 
     <title>@yield('title')</title>
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
     @livewireStyles
 
-
+    @stack('styles')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -26,13 +30,12 @@
     <!-- Sidebar -->
     @include('partials.sidebar')
 
-
     <main class="main-content">
 
         <!-- Topbar -->
-        @include('partials.topbar')
+            @include('partials.topbar')
 
-        <!-- Dynamic Content -->
+            <!-- Dynamic Content -->
         @yield('content')
 
     </main>
@@ -63,6 +66,9 @@
             }
         });
     </script>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

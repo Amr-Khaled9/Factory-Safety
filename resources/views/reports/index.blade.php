@@ -4,17 +4,17 @@
 
 @section('content')
 
-<section class="report-dashboard">
+<section class="p-4">
 
     <!-- HEADER + TOGGLE -->
-    <div class="report-header">
+    <div class="mb-4">
 
-        <h1>Safety Analytics Report</h1>
-        <p>Daily & Weekly monitoring system</p>
+        <h1 class="fw-bold">Safety Analytics Report</h1>
+        <p class="text-muted">Daily & Weekly monitoring system</p>
 
-        <div class="toggle">
-            <button id="dailyBtn" class="active" onclick="showDaily()">Daily</button>
-            <button id="weeklyBtn" onclick="showWeekly()">Weekly</button>
+        <div class="d-flex gap-2 mt-3">
+            <button id="dailyBtn" class="btn btn-primary btn-sm" onclick="showDaily()">Daily</button>
+            <button id="weeklyBtn" class="btn btn-light btn-sm" onclick="showWeekly()">Weekly</button>
         </div>
 
     </div>
@@ -23,35 +23,36 @@
     <div id="daily">
 
         <!-- KPIs -->
-        <div class="kpi-grid">
+        <div class="row g-3 mb-4">
 
-            <div class="kpi-card blue">
-                <h2>{{ $daily['ppe_logs'] }}</h2>
-                <p>PPE Logs</p>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-3 text-center p-4 border-start border-primary border-4">
+                    <h2 class="fw-bold">{{ $daily['ppe_logs'] }}</h2>
+                    <p class="text-muted mb-0">PPE Logs</p>
+                </div>
             </div>
 
-            <div class="kpi-card red">
-                <h2>{{ $daily['vehicle_logs'] }}</h2>
-                <p>Vehicle Logs</p>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-3 text-center p-4 border-start border-danger border-4">
+                    <h2 class="fw-bold">{{ $daily['vehicle_logs'] }}</h2>
+                    <p class="text-muted mb-0">Vehicle Logs</p>
+                </div>
             </div>
 
         </div>
-        <br>
 
         <!-- BIG SECTION -->
-        <div class="big-section">
+        <div class="card border-0 shadow-sm rounded-4 p-4 text-center">
 
-            <div class="card full">
+            <h3 class="fw-semibold mb-3">Daily Safety Compliance</h3>
 
-                <h3>Daily Safety Compliance</h3>
-
-                <div class="progress-bar">
-                    <div class="fill" style="width: {{ $dailyCompliance }}%"></div>
-                </div>
-
-                <h2>{{ $dailyCompliance }}%</h2>
-
+            <div class="progress rounded-3" style="height: 20px;">
+                <div class="progress-bar bg-gradient" role="progressbar"
+                     style="width: {{ $dailyCompliance }}%; background: linear-gradient(90deg, #1e88ff, #00c6ff);"
+                     aria-valuenow="{{ $dailyCompliance }}" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
+
+            <h2 class="fw-bold mt-3">{{ $dailyCompliance }}%</h2>
 
         </div>
 
@@ -61,63 +62,65 @@
     <div id="weekly" style="display:none;">
 
         <!-- KPIs -->
-        <div class="kpi-grid">
+        <div class="row g-3 mb-4">
 
-            <div class="kpi-card blue">
-                <h2>{{ $weekly['ppe_logs'] }}</h2>
-                <p>PPE Logs</p>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-3 text-center p-4 border-start border-primary border-4">
+                    <h2 class="fw-bold">{{ $weekly['ppe_logs'] }}</h2>
+                    <p class="text-muted mb-0">PPE Logs</p>
+                </div>
             </div>
 
-            <div class="kpi-card red">
-                <h2>{{ $weekly['vehicle_logs'] }}</h2>
-                <p>Vehicle Logs</p>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-3 text-center p-4 border-start border-danger border-4">
+                    <h2 class="fw-bold">{{ $weekly['vehicle_logs'] }}</h2>
+                    <p class="text-muted mb-0">Vehicle Logs</p>
+                </div>
             </div>
 
         </div>
 
         <!-- BIG SECTION -->
-        <div class="big-section">
+        <div class="card border-0 shadow-sm rounded-4 p-4 text-center">
 
-            <div class="card full">
+            <h3 class="fw-semibold mb-3">Weekly Safety Compliance</h3>
 
-                <h3>Weekly Safety Compliance</h3>
-
-                <div class="progress-bar">
-                    <div class="fill" style="width: {{ $weeklyCompliance }}%"></div>
-                </div>
-
-                <h2>{{ $weeklyCompliance }}%</h2>
-
+            <div class="progress rounded-3" style="height: 20px;">
+                <div class="progress-bar bg-gradient" role="progressbar"
+                     style="width: {{ $weeklyCompliance }}%; background: linear-gradient(90deg, #1e88ff, #00c6ff);"
+                     aria-valuenow="{{ $weeklyCompliance }}" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
+
+            <h2 class="fw-bold mt-3">{{ $weeklyCompliance }}%</h2>
 
         </div>
 
     </div>
 
     <!-- INSIGHTS -->
-    <div class="insight-box">
+    <div class="card border-0 shadow-sm rounded-3 p-4 mt-4">
 
-        <div class="risk">
+        <div class="mb-3">
             @if($dailyCompliance > 90)
-            <span class="safe">LOW RISK</span>
+            <span class="badge bg-success fs-6">LOW RISK</span>
             @elseif($dailyCompliance > 70)
-            <span class="medium">MEDIUM RISK</span>
+            <span class="badge bg-warning text-dark fs-6">MEDIUM RISK</span>
             @else
-            <span class="high">HIGH RISK</span>
+            <span class="badge bg-danger fs-6">HIGH RISK</span>
             @endif
         </div>
 
-        <div class="breakdown">
+        <div class="row text-center">
 
-            <div class="item">
-                <span>PPE %</span>
+            <div class="col-6">
+                <span class="text-muted d-block">PPE %</span>
                 <strong>
                     {{ round(($daily['ppe_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs']),1)) * 100, 1) }}%
                 </strong>
             </div>
 
-            <div class="item">
-                <span>Vehicle %</span>
+            <div class="col-6">
+                <span class="text-muted d-block">Vehicle %</span>
                 <strong>
                     {{ round(($daily['vehicle_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs']),1)) * 100, 1) }}%
                 </strong>
