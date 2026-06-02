@@ -45,8 +45,8 @@
         $url = '#';
 
         if (($data['type'] ?? null) === 'vehicle_log') {
-        $url = isset($data['pee_log_id'])
-        ? route('gate.show', $data['pee_log_id'])
+        $url = isset($data['vehicle_log_id'])
+        ? route('gate.show', $data['vehicle_log_id'])
         : '#';
         }
 

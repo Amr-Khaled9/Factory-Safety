@@ -78,7 +78,7 @@ class VehicleLogNotification extends Notification implements ShouldBroadcast
         return [
             'title'       => $this->title,
             'message'     => $this->message,
-            'pee_log_id'  => $this->vehicleLog->id,
+            'vehicle_log_id'  => $this->vehicleLog->id,
             'type'        => 'vehicle_log',
         ];
     }
