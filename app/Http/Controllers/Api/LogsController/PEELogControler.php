@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\LogsController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PEELogRequest;
+use App\Models\PPE;
 use App\Models\PPELog;
 use App\Models\User;
 use App\Notifications\PEELogNotification;
@@ -83,27 +84,24 @@ class PEELogControler extends Controller
 
     public function index()
     {
-        $vesteLogs = PPELog::with(['camera', 'pees', 'worker'])
-            ->whereHas('pees', function ($q) {
-                $q->where('ppe_type', 'veste');
-            })
-            ->orderByDesc('created_at')
-            ->paginate(15);
+        $ppeTypes = PPE::pluck('ppe_type');
 
-        $helmetLogs = PPELog::with(['camera', 'pees', 'worker'])
-            ->whereHas('pees', function ($q) {
-                $q->where('ppe_type', 'helmet');
-            })
-            ->orderByDesc('created_at')
-            ->paginate(15);
+        $logs = [];
+
+        foreach ($ppeTypes as $type) {
+
+            $logs[$type] = PPELog::with(['camera', 'pees', 'worker'])
+                ->whereHas('pees', function ($q) use ($type) {
+                    $q->where('ppe_type', $type);
+                })
+                ->orderByDesc('created_at')
+                ->paginate(10, ['*'], $type . '_page');
+        }
 
         return response()->json([
             'status'  => 'success',
             'message' => "PPE logs fetched successfully",
-            'data' => [
-                'veste' => $vesteLogs,
-                'helmet' => $helmetLogs,
-            ]
+            'data'    => $logs
         ], 200);
     }
 

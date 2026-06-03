@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\PPE;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PEELogRequest extends FormRequest
@@ -22,7 +23,13 @@ class PEELogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string|in:veste,helmet',
+            'type' => [
+                'required',
+                'string',
+                \Illuminate\Validation\Rule::in(
+                    PPE::pluck('ppe_type')->toArray()
+                ),
+            ],
             'image' => 'required|image|max:2048',
             'number_camera' => 'required|integer'
         ];

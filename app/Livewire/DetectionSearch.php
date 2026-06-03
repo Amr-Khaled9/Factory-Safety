@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\PPE;
 use Livewire\Component;
 use App\Models\PPELog;
 use Livewire\WithPagination;
@@ -27,14 +28,19 @@ class DetectionSearch extends Component
             })
             ->latest();
 
-        return view('livewire.detection-search', [
-            'vesteLogs' => (clone $baseQuery)
-                ->whereHas('ppe', fn($q) => $q->where('ppe_type', 'veste'))
-                ->paginate(20, ['*'], 'vest_page'),
+        $ppeTypes = PPE::pluck('ppe_type');
 
-            'helmetLogs' => (clone $baseQuery)
-                ->whereHas('ppe', fn($q) => $q->where('ppe_type', 'helmet'))
-                ->paginate(20, ['*'], 'helmet_page'),
-        ]);
+        $logs = [];
+
+        foreach ($ppeTypes as $type) {
+            $logs[$type] = (clone $baseQuery)
+                ->whereHas('ppe', fn($q) => $q->where('ppe_type', $type))
+                ->paginate(20, ['*'], "{$type}_page");
+        }
+
+        return view('livewire.detection-search', compact(
+            'logs',
+            'ppeTypes'
+        ));
     }
 }

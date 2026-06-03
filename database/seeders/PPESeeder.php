@@ -8,25 +8,47 @@ use Illuminate\Support\Facades\DB;
 
 class PPESeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DB::table('ppes')->delete();
 
         DB::table('ppes')->insert([
-            'ppe_type' => 'veste',
-            'description' => 'A safety vest that enhances visibility and protects the upper body.',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        DB::table('ppes')->insert([
-            'ppe_type' => 'helmet',
-            'description' => 'A safety helmet designed to protect the head from impacts and falling objects.',
-            'created_at' => now(),
-            'updated_at' => now(),
+            [
+                'ppe_type' => 'helmet',
+                'description' => 'Safety helmet for head protection.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'ppe_type' => 'vest',
+                'description' => 'High-visibility safety vest.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'ppe_type' => 'gloves',
+                'description' => 'Protective safety gloves.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'ppe_type' => 'glasses',
+                'description' => 'Protective safety glasses.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'ppe_type' => 'mask',
+                'description' => 'Protective face mask.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'ppe_type' => 'boots',
+                'description' => 'Protective safety boots.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

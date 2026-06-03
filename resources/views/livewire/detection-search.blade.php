@@ -1,40 +1,59 @@
 <section class="detections-page">
 
-    <input class="search-input"
+    <input
+        class="search-input"
         type="number"
         wire:model.live.debounce.300ms="search"
         placeholder="Search Detection ID">
 
-    <!-- TOGGLE -->
-    <div class="toggle-wrapper">
+    <!-- TOGGLES -->
+    <div class="toggle-wrapper d-flex flex-wrap gap-2 mb-4">
 
-        <button class="toggle-btn active" id="vestBtn">
-            <i class="fa-solid fa-user-check"></i>
-            Vest Detection
+        @foreach($ppeTypes as $index => $type)
+
+        <button
+            class="toggle-btn {{ $index === 0 ? 'active' : '' }}"
+            data-target="{{ $type }}Section">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            {{ ucfirst($type) }} Detection
+
         </button>
 
-        <button class="toggle-btn" id="helmetBtn">
-            <i class="fa-solid fa-hard-hat"></i>
-            Helmet Detection
-        </button>
+        @endforeach
 
     </div>
 
-    <!-- VEST -->
-    <div id="vestSection" class="detections-grid">
+    <!-- PPE SECTIONS -->
 
-        @foreach($vesteLogs as $log)
+    @foreach($ppeTypes as $index => $type)
+
+    <div
+        id="{{ $type }}Section"
+        class="detections-grid"
+        style="{{ $index !== 0 ? 'display:none;' : '' }}">
+
+        @forelse($logs[$type] as $log)
+
         <div class="detection-card">
 
-            <img src="{{ $log->image }}" alt="vest">
+            <img
+                src="{{ $log->image }}"
+                alt="{{ $type }}">
 
             <div class="card-body">
 
-                <span class="badge vest">VEST</span>
+                <span class="badge {{ $type }} text-danger">
+                    {{ strtoupper($type) }}
+                </span>
 
-                <h3>Detection #{{ $log->id }}</h3>
+                <h3>
+                    Detection #{{ $log->id }}
+                </h3>
 
                 <div class="meta">
+
                     <span>
                         <i class="fa-solid fa-camera"></i>
                         Camera #{{ $log->camera_id }}
@@ -44,62 +63,63 @@
                         <i class="fa-regular fa-clock"></i>
                         {{ $log->created_at->diffForHumans() }}
                     </span>
+
                 </div>
 
-                <a href="{{ route('detections.show', $log->id) }}"
+                <a
+                    href="{{ route('detections.show', $log->id) }}"
                     class="view-btn">
+
                     View Details
+
                 </a>
 
             </div>
+
         </div>
-        @endforeach
-        <!-- pagination vest -->
+
+        @empty
+
+        <div class="empty-state">
+            No detections found.
+        </div>
+
+        @endforelse
+
         <div class="pagination-wrapper">
-            {{ $vesteLogs->links() }}
-        </div>
-    </div>
-
-    <!-- HELMET -->
-    <div id="helmetSection" class="detections-grid" style="display:none;">
-
-        @foreach($helmetLogs as $log)
-        <div class="detection-card">
-
-            <img src="{{ $log->image }}" alt="helmet">
-
-            <div class="card-body">
-
-                <span class="badge helmet">HELMET</span>
-
-                <h3>Detection #{{ $log->id }}</h3>
-
-                <div class="meta">
-                    <span>
-                        <i class="fa-solid fa-camera"></i>
-                        Camera #{{ $log->camera_id }}
-                    </span>
-
-                    <span>
-                        <i class="fa-regular fa-clock"></i>
-                        {{ $log->created_at->diffForHumans() }}
-                    </span>
-                </div>
-
-                <a href="{{ route('detections.show', $log->id) }}"
-                    class="view-btn">
-                    View Details
-                </a>
-
-            </div>
-        </div>
-        @endforeach
-        <!-- pagination helmet -->
-        <div class="pagination-wrapper">
-            {{ $helmetLogs->links() }}
+            {{ $logs[$type]->links() }}
         </div>
 
     </div>
 
+    @endforeach
 
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const buttons = document.querySelectorAll('.toggle-btn');
+
+        buttons.forEach(button => {
+
+            button.addEventListener('click', () => {
+
+                buttons.forEach(btn => btn.classList.remove('active'));
+
+                button.classList.add('active');
+
+                document.querySelectorAll('.detections-grid')
+                    .forEach(section => {
+                        section.style.display = 'none';
+                    });
+
+                const target = button.dataset.target;
+
+                document.getElementById(target).style.display = 'grid';
+            });
+
+        });
+
+    });
+</script>
