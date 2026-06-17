@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
             'web.admin' => \App\Http\Middleware\WebAdminMiddleware::class,
             'web.user' => \App\Http\Middleware\WebUserMiddleware::class,
+            'ai.auth' => \App\Http\Middleware\AiClientMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
