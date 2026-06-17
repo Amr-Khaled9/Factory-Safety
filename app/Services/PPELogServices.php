@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Notifications\PEELogNotification;
 use Cloudinary\Cloudinary;
 
-class PEELogServices
+class PPELogServices
 {
     public function upload($image): string
     {

@@ -9,14 +9,14 @@ use App\Models\PPELog;
 use App\Models\User;
 use App\Notifications\PEELogNotification;
 use App\Services\FcmService;
-use App\Services\PEELogServices;
+use App\Services\PPELogServices;
 use Illuminate\Support\Facades\DB;
 
-class PEELogControler extends Controller
+class PPELogControler extends Controller
 {
     private $pEELogServices;
     private $fcmService;
-    public function __construct(PEELogServices $pEELogServices, FcmService $fcmService)
+    public function __construct(PPELogServices $pEELogServices, FcmService $fcmService)
     {
         $this->pEELogServices = $pEELogServices;
         $this->fcmService = $fcmService;
@@ -47,14 +47,6 @@ class PEELogControler extends Controller
                         $notificationMessage,
                     );
                 }
-
-                $user->notify(
-                    new PEELogNotification(
-                        $notificationTitle,
-                        $notificationMessage,
-                        $peeLog
-                    )
-                );
             }
 
             $users1 = User::all();
