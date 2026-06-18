@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\LogsController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFireLogRequest;
+use App\Jobs\SendNotificationJob;
 use App\Models\FireLog;
 use App\Models\User;
+use App\Notifications\FireLogNotification;
 use App\Services\FcmService;
 use App\Services\FireLogService;
 use Illuminate\Http\Request;
@@ -31,19 +33,11 @@ class FireLogController extends Controller
             $notificationTitle = 'Fire Alert 🚨';
             $notificationMessage = "Detected {$request->type} with confidence {$request->confidence}";
 
-            $users = User::whereHas('fcmToken')
-                ->with('fcmToken')
-                ->get();
-
-            foreach ($users as $user) {
-                if ($user->fcmToken && $user->fcmToken->fcm_token) {
-                    $this->fcmService->sendNotification(
-                        $user->fcmToken->fcm_token,
-                        $notificationTitle,
-                        $notificationMessage
-                    );
-                }
-            }
+            SendNotificationJob::dispatch(
+                $notificationTitle,
+                $notificationMessage,
+                new FireLogNotification($notificationTitle, $notificationMessage, $log)
+            );
 
             return response()->json([
                 'status'  => 'success',

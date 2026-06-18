@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\LogsController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PEELogRequest;
+use App\Jobs\SendNotificationJob;
 use App\Models\PPE;
 use App\Models\PPELog;
 use App\Models\User;
@@ -36,29 +37,12 @@ class PPELogControler extends Controller
             $notificationTitle = 'Worker Detected Without PPE';
             $notificationMessage = "PPE {$ppeType} is not being worn by the worker.";
 
-            $users = User::whereHas('fcmToken')->with('fcmToken')->get();
+            SendNotificationJob::dispatch(
+                $notificationTitle,
+                $notificationMessage,
+                new PEELogNotification($notificationTitle, $notificationMessage, $peeLog)
+            );
 
-            foreach ($users as $user) {
-
-                if ($user->fcmToken && $user->fcmToken->fcm_token) {
-                    $this->fcmService->sendNotification(
-                        $user->fcmToken->fcm_token,
-                        $notificationTitle,
-                        $notificationMessage,
-                    );
-                }
-            }
-
-            $users1 = User::all();
-            foreach ($users1 as $user1) {
-                $user1->notify(
-                    new PEELogNotification(
-                        $notificationTitle,
-                        $notificationMessage,
-                        $peeLog
-                    )
-                );
-            }
             return response()->json([
                 'status'  => 'success',
                 'message' => $notificationMessage,

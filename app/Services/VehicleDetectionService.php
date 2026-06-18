@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SendNotificationJob;
 use App\Models\Camera;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -55,20 +56,12 @@ class VehicleDetectionService
 
             $notificationTitle = 'Unauthorized Vehicle Detected';
             $notificationMessage = "Vehicle [{$vehicleLog->license_plate}] entered and is NOT authorized.";
-            $users = User::whereHas('fcmToken')->with('fcmToken')->get();
 
-            foreach ($users as $user) {
-                if ($user->fcmToken && $user->fcmToken->fcm_token) {
-                    $this->fcmService->sendNotification(
-                        $user->fcmToken->fcm_token,
-                        $notificationTitle,
-                        $notificationMessage,
-                    );
-                }
-            }
-
-
-            $this->notifyAdmins($vehicleLog);
+            SendNotificationJob::dispatch(
+                $notificationTitle,
+                $notificationMessage,
+                new VehicleLogNotification($notificationTitle, $notificationMessage, $vehicleLog)
+            );
 
             return [
                 'status'  => 'success',
@@ -132,22 +125,4 @@ class VehicleDetectionService
         return asset('storage/' . $path);
     }
 
-    private function notifyAdmins(VehicleLog $vehicleLog): void
-    {
-        $admins = User::get();
-
-        foreach ($admins as $admin) {
-            $title = 'Unauthorized Vehicle Detected';
-
-            $message = "Vehicle [{$vehicleLog->license_plate}] entered and is NOT authorized.";
-            // Database + Broadcast
-            $admin->notify(
-                new VehicleLogNotification(
-                    $title,
-                    $message,
-                    $vehicleLog
-                )
-            );
-        }
-    }
 }
