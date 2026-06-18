@@ -6,7 +6,7 @@ use Cloudinary\Cloudinary;
 
 trait UploadImageTrait
 {
-    public function uploadImage($image): string
+    public function uploadImageLiveInCloudinary($image): string
     {
         $cloudinary = new Cloudinary([
             'cloud' => [
@@ -22,5 +22,14 @@ trait UploadImageTrait
         );
 
         return $result['secure_url'];
+    }
+
+    public function uploadLocal($image, string $type = "uploads"): string
+    {
+        $fileName = $type . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+        $path = $image->storeAs('uploads', $fileName, 'public');
+
+        return asset('storage/' . $path);
     }
 }

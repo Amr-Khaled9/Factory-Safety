@@ -10,9 +10,10 @@ use App\Models\VehicleLog;
 use App\Notifications\VehicleLogNotification;
 use Cloudinary\Cloudinary;
 use Illuminate\Support\Facades\DB;
-
+use App\Traits\UploadImageTrait;
 class VehicleDetectionService
 {
+    use UploadImageTrait;
     private $fcmService;
     public function __construct(FcmService $fcmService)
     {
@@ -37,7 +38,7 @@ class VehicleDetectionService
     {
         return DB::transaction(function () use ($data) {
 
-            $imageUrl = $this->uploadLocal($data['image']);
+            $imageUrl = $this->uploadLocal($data['image'], 'vehicle');
 
             $vehicle = Vehicle::create([
                 'license_plate' => $data['license_plate'],
@@ -97,32 +98,6 @@ class VehicleDetectionService
                 'number_camera' => $cameraNumber,
             ],
         ];
-    }
-
-    public function uploadImage($image): string
-    {
-        $cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => config('cloudinary.cloud.cloud_name'),
-                'api_key'    => config('cloudinary.cloud.api_key'),
-                'api_secret' => config('cloudinary.cloud.api_secret'),
-            ],
-        ]);
-        $result = $cloudinary->uploadApi()->upload(
-            $image->getRealPath(),
-            ['folder' => 'laravel_uploads']
-        );
-
-        return $result['secure_url'];
-    }
-
-    public function uploadLocal($image): string
-    {
-        $fileName = 'vehicle_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-
-        $path = $image->storeAs('uploads', $fileName, 'public');
-
-        return asset('storage/' . $path);
     }
 
 }

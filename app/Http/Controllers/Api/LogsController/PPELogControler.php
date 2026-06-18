@@ -11,10 +11,12 @@ use App\Models\User;
 use App\Notifications\PEELogNotification;
 use App\Services\FcmService;
 use App\Services\PPELogServices;
+use App\Traits\UploadImageTrait;
 use Illuminate\Support\Facades\DB;
 
 class PPELogControler extends Controller
 {
+    use UploadImageTrait;
     private $pEELogServices;
     private $fcmService;
     public function __construct(PPELogServices $pEELogServices, FcmService $fcmService)
@@ -28,7 +30,7 @@ class PPELogControler extends Controller
 
         $response = DB::transaction(function () use ($request) {
 
-            $imagePath = $this->pEELogServices->uploadLocal($request->image);
+            $imagePath = $this->uploadLocal($request->image, 'ppe');
 
             $peeLog = $this->pEELogServices->create($request, $imagePath);
             $ppeType = strtolower($request->type);

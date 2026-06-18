@@ -11,33 +11,6 @@ use Cloudinary\Cloudinary;
 
 class PPELogServices
 {
-    public function upload($image): string
-    {
-        $cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => config('cloudinary.cloud.cloud_name'),
-                'api_key'    => config('cloudinary.cloud.api_key'),
-                'api_secret' => config('cloudinary.cloud.api_secret'),
-            ],
-        ]);
-
-        $result = $cloudinary->uploadApi()->upload(
-            $image->getRealPath(),
-            ['folder' => 'laravel_uploads']
-        );
-
-        return $result['secure_url'];
-    }
-
-    public function uploadLocal($image): string
-    {
-        $fileName = 'ppe_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-
-        $path = $image->storeAs('uploads', $fileName, 'public');
-
-        return asset('storage/' . $path);
-    }
-
     public function create($request, $imagePath): PPELog
     {
         $type = PPE::where('ppe_type', $request->type)->first();
@@ -49,16 +22,5 @@ class PPELogServices
             'created_at' => now(),
             'updated_at' => now()
         ]);
-    }
-
-    public function notifyAdmins(PPELog $peeLog, $notificationTitle, $notificationMessage): void
-    {
-        $admins = User::role('admin', 'api')->get();
-
-        foreach ($admins as $admin) {
-            $admin->notify(
-                new PEELogNotification($notificationTitle, $notificationMessage, $peeLog)
-            );
-        }
     }
 }

@@ -14,7 +14,7 @@ class FireLogService
         $imageUrl = null;
 
         if ($request->hasFile('image')) {
-            $imageUrl = $this->uploadImage($request->file('image'), 'fires');
+            $imageUrl = $this->uploadLocal($request->file('image'), 'fire');
         }
 
         return FireLog::create([
