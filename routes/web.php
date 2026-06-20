@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:web')->group(function () {
     Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('web.login');
+    Route::post('web/login', [AuthController::class, 'login'])->name('web.login');
 });
 
 Route::middleware('auth:web')->group(function () {
