@@ -21,10 +21,10 @@ jobs:
             cd /root/Factory-Safety
             git pull origin master
 
-            docker compose exec -T app php artisan optimize:clear
-            docker compose exec -T app php artisan optimize
+            docker-compose exec -T app php artisan optimize:clear
+            docker-compose exec -T app php artisan optimize
 
-            docker compose exec -T app php artisan queue:restart
+            docker-compose exec -T app php artisan queue:restart
            
-            docker compose restart queue
-            docker compose restart reverb
+            docker-compose restart queue
+            docker-compose restart reverb
