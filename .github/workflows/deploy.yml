@@ -21,15 +21,10 @@ jobs:
             cd /root/Factory-Safety
             git pull origin master
 
-            # restart queue worker
-            php artisan queue:restart
-            pkill -f "queue:work" || true
-            nohup php artisan queue:work > queue.log 2>&1 &
+            docker compose exec -T app php artisan optimize:clear
+            docker compose exec -T app php artisan optimize
 
-            # restart Reverb
-            pkill -f "reverb" || true
-            nohup php artisan reverb:start > reverb.log 2>&1 &
-
-            # optional: cache clear + optimize
-            php artisan optimize:clear
-            php artisan optimize
+            docker compose exec -T app php artisan queue:restart
+           
+            docker compose restart queue
+            docker compose restart reverb
