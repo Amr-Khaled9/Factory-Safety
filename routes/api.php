@@ -25,7 +25,7 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-Route::get('/login', function () {
+Route::get('/v1/login', function () {
     return response()->json(['message' => 'Unauthenticated.'], 401);
 })->name('login');
 
