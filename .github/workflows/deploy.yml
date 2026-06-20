@@ -24,8 +24,6 @@ jobs:
             docker-compose exec app php artisan optimize:clear
             docker-compose exec app php artisan optimize
 
-            docker-compose exec app php artisan queue:restart
-
-            docker-compose exec app php artisan queue:start
-            docker-compose exec app php artisan reverb:start
+            docker-compose exec -T app php artisan queue:restart
+            docker-compose exec -T app php artisan reverb:restart || true
             
