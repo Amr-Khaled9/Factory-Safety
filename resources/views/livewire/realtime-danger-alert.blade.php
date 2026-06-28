@@ -10,7 +10,6 @@
     <div
         class="danger-alert"
         x-data="{ show: true }"
-        x-init="setTimeout(() => show = false, 5000)"
         x-show="show"
 
         @click="

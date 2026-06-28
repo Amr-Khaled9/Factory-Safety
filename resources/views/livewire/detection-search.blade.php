@@ -1,77 +1,61 @@
 <section class="detections-page">
 
+    <!-- Header -->
+    <div class="page-header mb-4">
+        <div>
+            <h1 style="font-size:26px;font-weight:800;color:var(--text-primary);margin:0 0 4px">PPE Detections</h1>
+            <p style="color:var(--text-muted);font-size:14px;margin:0">AI-detected safety violations across all cameras</p>
+        </div>
+    </div>
+
+    <!-- Search -->
     <input
         class="search-input"
         type="number"
         wire:model.live.debounce.300ms="search"
-        placeholder="Search Detection ID">
+        placeholder="Search by detection ID...">
 
-    <!-- TOGGLES -->
-    <div class="toggle-wrapper d-flex flex-wrap gap-2 mb-4">
-
+    <!-- Toggle Buttons -->
+    <div class="toggle-wrapper">
         @foreach($ppeTypes as $index => $type)
-
         <button
             class="toggle-btn {{ $index === 0 ? 'active' : '' }}"
             data-target="{{ $type }}Section">
-
-            <i class="fa-solid fa-shield-halved"></i>
-
-            {{ ucfirst($type) }} Detection
-
+            <i class="fa-solid fa-hard-hat me-2"></i>
+            {{ ucfirst($type) }}
         </button>
-
         @endforeach
-
     </div>
 
-    <!-- PPE SECTIONS -->
-
+    <!-- Detection Grids -->
     @foreach($ppeTypes as $index => $type)
 
-    <div
-        id="{{ $type }}Section"
-        class="detections-grid"
-        style="{{ $index !== 0 ? 'display:none;' : '' }}">
+    <div id="{{ $type }}Section"
+         class="detections-grid"
+         style="{{ $index !== 0 ? 'display:none;' : '' }}">
 
         @forelse($logs[$type] as $log)
 
         <div class="detection-card">
 
-            <img
-                src="{{ $log->image }}"
-                alt="{{ $type }}">
+            <img src="{{ $log->image }}" alt="{{ $type }}">
 
             <div class="card-body">
 
-                <span class="badge {{ $type }} text-danger">
+                <span class="badge {{ $type }}">
+                    <i class="fa-solid fa-circle-exclamation"></i>
                     {{ strtoupper($type) }}
                 </span>
 
-                <h3>
-                    Detection #{{ $log->id }}
-                </h3>
+                <h3>Detection #{{ $log->id }}</h3>
 
                 <div class="meta">
-
-                    <span>
-                        <i class="fa-solid fa-camera"></i>
-                        Camera #{{ $log->camera_id }}
-                    </span>
-
-                    <span>
-                        <i class="fa-regular fa-clock"></i>
-                        {{ $log->created_at->diffForHumans() }}
-                    </span>
-
+                    <span><i class="fa-solid fa-camera"></i> Camera #{{ $log->camera_id }}</span>
+                    <span><i class="fa-regular fa-clock"></i> {{ $log->created_at->diffForHumans() }}</span>
                 </div>
 
-                <a
-                    href="{{ route('detections.show', $log->id) }}"
-                    class="view-btn">
-
-                    View Details
-
+                <a href="{{ route('detections.show', $log->id) }}" class="view-btn">
+                    <i class="fa-solid fa-arrow-right me-2"></i>View Details
                 </a>
 
             </div>
@@ -81,12 +65,13 @@
         @empty
 
         <div class="empty-state">
-            No detections found.
+            <i class="fa-solid fa-magnifying-glass"></i>
+            No {{ $type }} detections found.
         </div>
 
         @endforelse
 
-        <div class="pagination-wrapper">
+        <div class="pagination-wrapper" style="grid-column:1/-1">
             {{ $logs[$type]->links() }}
         </div>
 
@@ -97,29 +82,15 @@
 </section>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-
-        const buttons = document.querySelectorAll('.toggle-btn');
-
-        buttons.forEach(button => {
-
-            button.addEventListener('click', () => {
-
-                buttons.forEach(btn => btn.classList.remove('active'));
-
-                button.classList.add('active');
-
-                document.querySelectorAll('.detections-grid')
-                    .forEach(section => {
-                        section.style.display = 'none';
-                    });
-
-                const target = button.dataset.target;
-
-                document.getElementById(target).style.display = 'grid';
-            });
-
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.toggle-btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.detections-grid').forEach(s => s.style.display = 'none');
+            document.getElementById(btn.dataset.target).style.display = 'grid';
         });
-
     });
+});
 </script>

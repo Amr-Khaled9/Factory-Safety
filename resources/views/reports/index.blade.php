@@ -1,135 +1,172 @@
 @extends('layouts.app')
 
 @section('title', 'Safety Reports')
+@section('page-title', 'Safety Analytics')
+@section('page-subtitle', 'Daily & weekly monitoring data')
 
 @section('content')
 
 <section class="p-4">
 
-    <!-- HEADER + TOGGLE -->
-    <div class="mb-4">
-
-        <h1 class="fw-bold">Safety Analytics Report</h1>
-        <p class="text-muted">Daily & Weekly monitoring system</p>
-
-        <div class="d-flex gap-2 mt-3">
-            <button id="dailyBtn" class="btn btn-primary btn-sm" onclick="showDaily()">Daily</button>
-            <button id="weeklyBtn" class="btn btn-light btn-sm" onclick="showWeekly()">Weekly</button>
+    <!-- Header + Toggle -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1" style="font-size:26px">Safety Analytics Report</h1>
+            <p class="text-muted small mb-0">AI-powered violation tracking and compliance metrics</p>
         </div>
-
+        <div class="d-flex gap-2">
+            <button id="dailyBtn" class="btn btn-primary btn-sm fw-semibold px-4" onclick="showDaily()">
+                <i class="fa-regular fa-calendar me-1"></i>Daily
+            </button>
+            <button id="weeklyBtn" class="btn btn-outline-secondary btn-sm fw-semibold px-4" onclick="showWeekly()">
+                <i class="fa-solid fa-calendar-week me-1"></i>Weekly
+            </button>
+        </div>
     </div>
 
-    <!-- ================= DAILY ================= -->
+    <!-- Daily Section -->
     <div id="daily">
 
-        <!-- KPIs -->
         <div class="row g-3 mb-4">
-
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm rounded-3 text-center p-4 border-start border-primary border-4">
-                    <h2 class="fw-bold">{{ $daily['ppe_logs'] }}</h2>
-                    <p class="text-muted mb-0">PPE Logs</p>
+                <div class="card border-0 p-4" style="border-left:4px solid var(--brand) !important">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
+                             style="width:48px;height:48px">
+                            <i class="fa-solid fa-hard-hat text-primary fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size:30px;line-height:1">{{ $daily['ppe_logs'] }}</div>
+                            <div class="text-muted small">PPE Violations Today</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm rounded-3 text-center p-4 border-start border-danger border-4">
-                    <h2 class="fw-bold">{{ $daily['vehicle_logs'] }}</h2>
-                    <p class="text-muted mb-0">Vehicle Logs</p>
+                <div class="card border-0 p-4" style="border-left:4px solid var(--danger) !important">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 bg-danger bg-opacity-10 d-flex align-items-center justify-content-center"
+                             style="width:48px;height:48px">
+                            <i class="fa-solid fa-car text-danger fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size:30px;line-height:1">{{ $daily['vehicle_logs'] }}</div>
+                            <div class="text-muted small">Vehicle Logs Today</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- BIG SECTION -->
-        <div class="card border-0 shadow-sm rounded-4 p-4 text-center">
-
-            <h3 class="fw-semibold mb-3">Daily Safety Compliance</h3>
-
-            <div class="progress rounded-3" style="height: 20px;">
-                <div class="progress-bar bg-gradient" role="progressbar"
-                     style="width: {{ $dailyCompliance }}%; background: linear-gradient(90deg, #1e88ff, #00c6ff);"
-                     aria-valuenow="{{ $dailyCompliance }}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="card border-0 p-4 text-center">
+            <h5 class="fw-bold mb-1">Daily Safety Compliance</h5>
+            <p class="text-muted small mb-4">Based on AI detections vs total monitored events</p>
+            <div class="progress rounded-3 mb-3" style="height:16px">
+                <div class="progress-bar"
+                     role="progressbar"
+                     style="width:{{ $dailyCompliance }}%;background:linear-gradient(90deg,#2563eb,#06b6d4)"
+                     aria-valuenow="{{ $dailyCompliance }}"
+                     aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-
-            <h2 class="fw-bold mt-3">{{ $dailyCompliance }}%</h2>
-
+            <div class="fw-bold" style="font-size:36px;color:var(--text-primary)">{{ $dailyCompliance }}%</div>
         </div>
 
     </div>
 
-    <!-- ================= WEEKLY ================= -->
-    <div id="weekly" style="display:none;">
+    <!-- Weekly Section -->
+    <div id="weekly" style="display:none">
 
-        <!-- KPIs -->
         <div class="row g-3 mb-4">
-
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm rounded-3 text-center p-4 border-start border-primary border-4">
-                    <h2 class="fw-bold">{{ $weekly['ppe_logs'] }}</h2>
-                    <p class="text-muted mb-0">PPE Logs</p>
+                <div class="card border-0 p-4" style="border-left:4px solid var(--brand) !important">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
+                             style="width:48px;height:48px">
+                            <i class="fa-solid fa-hard-hat text-primary fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size:30px;line-height:1">{{ $weekly['ppe_logs'] }}</div>
+                            <div class="text-muted small">PPE Violations This Week</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm rounded-3 text-center p-4 border-start border-danger border-4">
-                    <h2 class="fw-bold">{{ $weekly['vehicle_logs'] }}</h2>
-                    <p class="text-muted mb-0">Vehicle Logs</p>
+                <div class="card border-0 p-4" style="border-left:4px solid var(--danger) !important">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 bg-danger bg-opacity-10 d-flex align-items-center justify-content-center"
+                             style="width:48px;height:48px">
+                            <i class="fa-solid fa-car text-danger fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size:30px;line-height:1">{{ $weekly['vehicle_logs'] }}</div>
+                            <div class="text-muted small">Vehicle Logs This Week</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- BIG SECTION -->
-        <div class="card border-0 shadow-sm rounded-4 p-4 text-center">
-
-            <h3 class="fw-semibold mb-3">Weekly Safety Compliance</h3>
-
-            <div class="progress rounded-3" style="height: 20px;">
-                <div class="progress-bar bg-gradient" role="progressbar"
-                     style="width: {{ $weeklyCompliance }}%; background: linear-gradient(90deg, #1e88ff, #00c6ff);"
-                     aria-valuenow="{{ $weeklyCompliance }}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="card border-0 p-4 text-center">
+            <h5 class="fw-bold mb-1">Weekly Safety Compliance</h5>
+            <p class="text-muted small mb-4">7-day rolling compliance rate</p>
+            <div class="progress rounded-3 mb-3" style="height:16px">
+                <div class="progress-bar"
+                     role="progressbar"
+                     style="width:{{ $weeklyCompliance }}%;background:linear-gradient(90deg,#2563eb,#06b6d4)"
+                     aria-valuenow="{{ $weeklyCompliance }}"
+                     aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-
-            <h2 class="fw-bold mt-3">{{ $weeklyCompliance }}%</h2>
-
+            <div class="fw-bold" style="font-size:36px;color:var(--text-primary)">{{ $weeklyCompliance }}%</div>
         </div>
 
     </div>
 
-    <!-- INSIGHTS -->
-    <div class="card border-0 shadow-sm rounded-3 p-4 mt-4">
-
-        <div class="mb-3">
+    <!-- Risk Badge -->
+    <div class="card border-0 p-4 mt-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
+            <h5 class="fw-bold mb-0">Risk Assessment</h5>
             @if($dailyCompliance > 90)
-            <span class="badge bg-success fs-6">LOW RISK</span>
+            <span class="badge fs-6 fw-bold px-3 py-2" style="background:var(--success-bg);color:var(--success)">
+                <i class="fa-solid fa-circle-check me-1"></i>LOW RISK
+            </span>
             @elseif($dailyCompliance > 70)
-            <span class="badge bg-warning text-dark fs-6">MEDIUM RISK</span>
+            <span class="badge fs-6 fw-bold px-3 py-2" style="background:var(--warning-bg);color:var(--warning)">
+                <i class="fa-solid fa-triangle-exclamation me-1"></i>MEDIUM RISK
+            </span>
             @else
-            <span class="badge bg-danger fs-6">HIGH RISK</span>
+            <span class="badge fs-6 fw-bold px-3 py-2" style="background:var(--danger-bg);color:var(--danger)">
+                <i class="fa-solid fa-circle-exclamation me-1"></i>HIGH RISK
+            </span>
             @endif
         </div>
-
         <div class="row text-center">
-
-            <div class="col-6">
-                <span class="text-muted d-block">PPE %</span>
-                <strong>
-                    {{ round(($daily['ppe_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs']),1)) * 100, 1) }}%
-                </strong>
+            <div class="col-6 border-end">
+                <div class="text-muted small mb-1">PPE Violations</div>
+                <div class="fw-bold fs-5">{{ round(($daily['ppe_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs']),1)) * 100, 1) }}%</div>
             </div>
-
             <div class="col-6">
-                <span class="text-muted d-block">Vehicle %</span>
-                <strong>
-                    {{ round(($daily['vehicle_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs']),1)) * 100, 1) }}%
-                </strong>
+                <div class="text-muted small mb-1">Vehicle Logs</div>
+                <div class="fw-bold fs-5">{{ round(($daily['vehicle_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs']),1)) * 100, 1) }}%</div>
             </div>
-
         </div>
-
     </div>
 
 </section>
+
+<script>
+function showDaily() {
+    document.getElementById('daily').style.display = '';
+    document.getElementById('weekly').style.display = 'none';
+    document.getElementById('dailyBtn').className = 'btn btn-primary btn-sm fw-semibold px-4';
+    document.getElementById('weeklyBtn').className = 'btn btn-outline-secondary btn-sm fw-semibold px-4';
+}
+function showWeekly() {
+    document.getElementById('daily').style.display = 'none';
+    document.getElementById('weekly').style.display = '';
+    document.getElementById('dailyBtn').className = 'btn btn-outline-secondary btn-sm fw-semibold px-4';
+    document.getElementById('weeklyBtn').className = 'btn btn-primary btn-sm fw-semibold px-4';
+}
+</script>
 
 @endsection
