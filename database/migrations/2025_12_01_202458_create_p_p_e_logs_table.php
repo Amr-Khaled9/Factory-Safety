@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('ppe_logs', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-            $table->unsignedBigInteger('ppe_id');
-            $table->foreign('ppe_id')->references('id')->on('ppes')->onDelete('cascade');
+            $table->unsignedBigInteger('person_id');
+            $table->json('violations');
             $table->foreignId('camera_id')->constrained('cameras')->onDelete('cascade');
             $table->foreignId('worker_id')->constrained('workers')->onDelete('cascade');
             $table->timestamps();

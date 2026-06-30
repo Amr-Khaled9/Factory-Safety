@@ -15,29 +15,34 @@ class PEELogRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    protected function prepareForValidation()
+    {
+        if ($this->has('violations') && is_string($this->violations)) {
+            $decoded = json_decode($this->violations, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                $this->merge([
+                    'violations' => $decoded,
+                ]);
+            }
+        }
+    }
     public function rules(): array
     {
         return [
-            'type' => [
-                'required',
-                'string',
-                \Illuminate\Validation\Rule::in(
-                    PPE::pluck('ppe_type')->toArray()
-                ),
-            ],
+            'violations' => 'required|array|min:1',
             'image' => 'required|image|max:2048',
-            'number_camera' => 'required|integer'
+            'number_camera' => 'required|integer',
+            'person_id' => 'required|integer',
+            'violations.*'  => 'required|string',
+
+
+
         ];
     }
     public function messages(): array
     {
         return [
-            'type.required' => 'Type is required.',
+            'violations.required' => 'Violations is required.',
             'type.string' => 'Type must be a string.',
             'type.in' => 'The type must be either veste or helmet.',
 
@@ -47,6 +52,8 @@ class PEELogRequest extends FormRequest
 
             'number_camera.required' => 'Number of cameras is required.',
             'number_camera.integer' => 'Number of cameras must be an integer.',
+            'person_id.required' => 'Person ID is required.',
+            'person_id.integer' => 'Person ID must be an integer.',
         ];
     }
 }

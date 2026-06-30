@@ -27,17 +27,16 @@ class PPELogControler extends Controller
 
     public function storePpeLogAndNotify(PEELogRequest $request)
     {
-
         $response = DB::transaction(function () use ($request) {
 
             $imagePath = $this->uploadLocal($request->image, 'ppe');
 
             $peeLog = $this->pEELogServices->create($request, $imagePath);
-            $ppeType = strtolower($request->type);
 
+            $violationsList = implode(', ', $request->violations);
 
             $notificationTitle = 'Worker Detected Without PPE';
-            $notificationMessage = "PPE {$ppeType} is not being worn by the worker.";
+            $notificationMessage = "PPE {$violationsList} is not being worn by the worker.";
 
             SendNotificationJob::dispatch(
                 $notificationTitle,
@@ -49,10 +48,10 @@ class PPELogControler extends Controller
                 'status'  => 'success',
                 'message' => $notificationMessage,
                 'data' => [
-                    'title' => $notificationTitle,
+                    'title'         => $notificationTitle,
                     'number_camera' => $request->number_camera,
-                    'log' => $peeLog,
-
+                    'person_id'     => $request->person_id,
+                    'log'           => $peeLog,
                 ],
             ]);
         });
@@ -62,19 +61,9 @@ class PPELogControler extends Controller
 
     public function index()
     {
-        $ppeTypes = PPE::pluck('ppe_type');
-
-        $logs = [];
-
-        foreach ($ppeTypes as $type) {
-
-            $logs[$type] = PPELog::with(['camera', 'pees', 'worker'])
-                ->whereHas('pees', function ($q) use ($type) {
-                    $q->where('ppe_type', $type);
-                })
-                ->orderByDesc('created_at')
-                ->paginate(10, ['*'], $type . '_page');
-        }
+        $logs = PPELog::with(['camera', 'worker'])
+            ->orderByDesc('created_at')
+            ->paginate(10);
 
         return response()->json([
             'status'  => 'success',
@@ -86,7 +75,7 @@ class PPELogControler extends Controller
 
     public function show($id)
     {
-        $log = PPELog::with(['camera', 'pees', 'worker'])
+        $log = PPELog::with(['camera', 'worker'])
             ->findOrFail($id);
         return response()->json([
             'status'  => 'success',

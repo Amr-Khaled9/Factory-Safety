@@ -13,9 +13,14 @@ class PPELog extends Model
     protected $table = "ppe_logs";
     protected $fillable = [
         'image',
-        'ppe_id',
+        'violations',
         'camera_id',
-        'worker_id'
+        'worker_id',
+        'person_id'
+    ];
+
+    protected $casts = [
+        'violations' => 'array',
     ];
     public function camera(): BelongsTo
     {
