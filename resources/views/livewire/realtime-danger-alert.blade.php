@@ -3,8 +3,9 @@
     @foreach($notifications as $notification)
 
     @php
-        $peeId = $notification->data['pee_log_id'] ?? null;
-        $vehicleId = $notification->data['vehicle_log_id'] ?? null;
+    $peeId = $notification->data['pee_log_id'] ?? null;
+    $vehicleId = $notification->data['vehicle_log_id'] ?? null;
+    $fireId = $notification->data['fire_log_id'] ?? null; // ← زود دي
     @endphp
 
     <div
@@ -13,13 +14,15 @@
         x-show="show"
 
         @click="
-            window.location.href =
-            '{{ $peeId
-                ? '/detections/'.$peeId
-                : ($vehicleId ? '/gate/'.$vehicleId : '/gate')
-            }}'
-        ">
-
+    window.location.href =
+    '{{ $peeId
+        ? '/detections/'.$peeId
+        : ($fireId
+            ? '/fire/'.$fireId
+            : ($vehicleId ? '/gate/'.$vehicleId : '/gate')
+        )
+    }}'
+">
         <strong>
             {{ $notification->data['title'] ?? 'No title' }}
         </strong>

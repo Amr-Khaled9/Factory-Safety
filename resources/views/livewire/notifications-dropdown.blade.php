@@ -55,6 +55,12 @@
         ? route('detections.show', $data['pee_log_id'])
         : '#';
         }
+
+        if (($data['type'] ?? null) === 'fire_log') {
+        $url = isset($data['fire_log_id'])
+        ? route('fire.show', $data['fire_log_id'])
+        : '#';
+        }
         @endphp
 
         <a href="{{ $url }}" class="notification-item">
