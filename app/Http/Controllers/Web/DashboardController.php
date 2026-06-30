@@ -26,9 +26,8 @@ class DashboardController extends Controller
 
         $chartData = [
             'PPE' => \App\Models\PPELog::whereDate('created_at', $today)->count(),
-
             'Vehicles' => \App\Models\VehicleLog::whereDate('created_at', $today)->count(),
-
+            'Fire' => \App\Models\FireLog::whereDate('created_at', $today)->count(),
         ];
 
         return view('dashboard.index', compact('todayAccidentCount', 'dailySafetyCompliance', 'chartData'));

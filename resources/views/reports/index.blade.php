@@ -32,7 +32,7 @@
                 <div class="card border-0 p-4" style="border-left:4px solid var(--brand) !important">
                     <div class="d-flex align-items-center gap-3">
                         <div class="rounded-3 bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
-                             style="width:48px;height:48px">
+                            style="width:48px;height:48px">
                             <i class="fa-solid fa-hard-hat text-primary fs-5"></i>
                         </div>
                         <div>
@@ -46,12 +46,26 @@
                 <div class="card border-0 p-4" style="border-left:4px solid var(--danger) !important">
                     <div class="d-flex align-items-center gap-3">
                         <div class="rounded-3 bg-danger bg-opacity-10 d-flex align-items-center justify-content-center"
-                             style="width:48px;height:48px">
+                            style="width:48px;height:48px">
                             <i class="fa-solid fa-car text-danger fs-5"></i>
                         </div>
                         <div>
                             <div class="fw-bold" style="font-size:30px;line-height:1">{{ $daily['vehicle_logs'] }}</div>
                             <div class="text-muted small">Vehicle Logs Today</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 p-4" style="border-left:4px solid #f97316 !important">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center"
+                            style="width:48px;height:48px;background:#f9731620">
+                            <i class="fa-solid fa-fire fs-5" style="color:#f97316"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size:30px;line-height:1">{{ $daily['fire_logs'] }}</div>
+                            <div class="text-muted small">Fire Detections Today</div>
                         </div>
                     </div>
                 </div>
@@ -63,10 +77,10 @@
             <p class="text-muted small mb-4">Based on AI detections vs total monitored events</p>
             <div class="progress rounded-3 mb-3" style="height:16px">
                 <div class="progress-bar"
-                     role="progressbar"
-                     style="width:{{ $dailyCompliance }}%;background:linear-gradient(90deg,#2563eb,#06b6d4)"
-                     aria-valuenow="{{ $dailyCompliance }}"
-                     aria-valuemin="0" aria-valuemax="100"></div>
+                    role="progressbar"
+                    style="width:{{ $dailyCompliance }}%;background:linear-gradient(90deg,#2563eb,#06b6d4)"
+                    aria-valuenow="{{ $dailyCompliance }}"
+                    aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <div class="fw-bold" style="font-size:36px;color:var(--text-primary)">{{ $dailyCompliance }}%</div>
         </div>
@@ -81,7 +95,7 @@
                 <div class="card border-0 p-4" style="border-left:4px solid var(--brand) !important">
                     <div class="d-flex align-items-center gap-3">
                         <div class="rounded-3 bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
-                             style="width:48px;height:48px">
+                            style="width:48px;height:48px">
                             <i class="fa-solid fa-hard-hat text-primary fs-5"></i>
                         </div>
                         <div>
@@ -95,12 +109,26 @@
                 <div class="card border-0 p-4" style="border-left:4px solid var(--danger) !important">
                     <div class="d-flex align-items-center gap-3">
                         <div class="rounded-3 bg-danger bg-opacity-10 d-flex align-items-center justify-content-center"
-                             style="width:48px;height:48px">
+                            style="width:48px;height:48px">
                             <i class="fa-solid fa-car text-danger fs-5"></i>
                         </div>
                         <div>
                             <div class="fw-bold" style="font-size:30px;line-height:1">{{ $weekly['vehicle_logs'] }}</div>
                             <div class="text-muted small">Vehicle Logs This Week</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 p-4" style="border-left:4px solid #f97316 !important">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center"
+                            style="width:48px;height:48px;background:#f9731620">
+                            <i class="fa-solid fa-fire fs-5" style="color:#f97316"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size:30px;line-height:1">{{ $weekly['fire_logs'] }}</div>
+                            <div class="text-muted small">Fire Detections This Week</div>
                         </div>
                     </div>
                 </div>
@@ -112,10 +140,10 @@
             <p class="text-muted small mb-4">7-day rolling compliance rate</p>
             <div class="progress rounded-3 mb-3" style="height:16px">
                 <div class="progress-bar"
-                     role="progressbar"
-                     style="width:{{ $weeklyCompliance }}%;background:linear-gradient(90deg,#2563eb,#06b6d4)"
-                     aria-valuenow="{{ $weeklyCompliance }}"
-                     aria-valuemin="0" aria-valuemax="100"></div>
+                    role="progressbar"
+                    style="width:{{ $weeklyCompliance }}%;background:linear-gradient(90deg,#2563eb,#06b6d4)"
+                    aria-valuenow="{{ $weeklyCompliance }}"
+                    aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <div class="fw-bold" style="font-size:36px;color:var(--text-primary)">{{ $weeklyCompliance }}%</div>
         </div>
@@ -141,13 +169,17 @@
             @endif
         </div>
         <div class="row text-center">
-            <div class="col-6 border-end">
+            <div class="col-4 border-end">
                 <div class="text-muted small mb-1">PPE Violations</div>
-                <div class="fw-bold fs-5">{{ round(($daily['ppe_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs']),1)) * 100, 1) }}%</div>
+                <div class="fw-bold fs-5">{{ round(($daily['ppe_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs'] + $daily['fire_logs']),1)) * 100, 1) }}%</div>
             </div>
-            <div class="col-6">
+            <div class="col-4 border-end">
                 <div class="text-muted small mb-1">Vehicle Logs</div>
-                <div class="fw-bold fs-5">{{ round(($daily['vehicle_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs']),1)) * 100, 1) }}%</div>
+                <div class="fw-bold fs-5">{{ round(($daily['vehicle_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs'] + $daily['fire_logs']),1)) * 100, 1) }}%</div>
+            </div>
+            <div class="col-4">
+                <div class="text-muted small mb-1">Fire Detections</div>
+                <div class="fw-bold fs-5">{{ round(($daily['fire_logs'] / max(($daily['ppe_logs'] + $daily['vehicle_logs'] + $daily['fire_logs']),1)) * 100, 1) }}%</div>
             </div>
         </div>
     </div>
@@ -155,18 +187,19 @@
 </section>
 
 <script>
-function showDaily() {
-    document.getElementById('daily').style.display = '';
-    document.getElementById('weekly').style.display = 'none';
-    document.getElementById('dailyBtn').className = 'btn btn-primary btn-sm fw-semibold px-4';
-    document.getElementById('weeklyBtn').className = 'btn btn-outline-secondary btn-sm fw-semibold px-4';
-}
-function showWeekly() {
-    document.getElementById('daily').style.display = 'none';
-    document.getElementById('weekly').style.display = '';
-    document.getElementById('dailyBtn').className = 'btn btn-outline-secondary btn-sm fw-semibold px-4';
-    document.getElementById('weeklyBtn').className = 'btn btn-primary btn-sm fw-semibold px-4';
-}
+    function showDaily() {
+        document.getElementById('daily').style.display = '';
+        document.getElementById('weekly').style.display = 'none';
+        document.getElementById('dailyBtn').className = 'btn btn-primary btn-sm fw-semibold px-4';
+        document.getElementById('weeklyBtn').className = 'btn btn-outline-secondary btn-sm fw-semibold px-4';
+    }
+
+    function showWeekly() {
+        document.getElementById('daily').style.display = 'none';
+        document.getElementById('weekly').style.display = '';
+        document.getElementById('dailyBtn').className = 'btn btn-outline-secondary btn-sm fw-semibold px-4';
+        document.getElementById('weeklyBtn').className = 'btn btn-primary btn-sm fw-semibold px-4';
+    }
 </script>
 
 @endsection
