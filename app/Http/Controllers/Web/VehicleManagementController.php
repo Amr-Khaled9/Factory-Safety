@@ -7,9 +7,11 @@ use App\Http\Requests\Admin\CreateVehiclRequest;
 use App\Http\Requests\Admin\UpdateVehiclRequest;
 use App\Models\Vehicle;
 use App\Services\VehicleDetectionService;
+use App\Traits\UploadImageTrait;
 
 class VehicleManagementController extends Controller
 {
+    use UploadImageTrait;
     private $vehicleDetectionService;
 
     public function __construct(
@@ -34,8 +36,7 @@ class VehicleManagementController extends Controller
     {
         $data = $request->validated();
 
-        $imageUrl = $this->vehicleDetectionService
-            ->uploadImage($request->file('image'));
+        $imageUrl = $this->uploadLocal($request->file('image'), 'vehicle');
 
         Vehicle::create([
             'authorized'    => $data['authorized'],
@@ -71,8 +72,7 @@ class VehicleManagementController extends Controller
 
         if ($request->hasFile('image')) {
 
-            $imageUrl = $this->vehicleDetectionService
-                ->uploadImage($request->file('image'));
+            $imageUrl = $this->uploadLocal($request->file('image'), 'vehicle');
 
             $data['image'] = $imageUrl;
         }
