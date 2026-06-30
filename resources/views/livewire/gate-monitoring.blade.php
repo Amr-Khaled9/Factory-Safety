@@ -7,12 +7,21 @@
         </div>
     </div>
 
-    <div class="search-box">
-        <input
-            type="text"
-            class="search-input"
-            placeholder="Search by license plate..."
-            wire:model.live="search">
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <input
+                type="text"
+                class="search-input"
+                placeholder="Search by license plate..."
+                wire:model.live.debounce.300ms="search">
+        </div>
+
+        <div class="col-md-4">
+            <input
+                type="date"
+                class="form-control"
+                wire:model.live="date">
+        </div>
     </div>
 
     <div class="gate-grid">

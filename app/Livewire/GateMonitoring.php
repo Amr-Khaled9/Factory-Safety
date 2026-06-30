@@ -11,8 +11,16 @@ class GateMonitoring extends Component
     use WithPagination;
 
     public $search = '';
+    public $date = '';
+
+    protected $paginationTheme = 'bootstrap';
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingDate()
     {
         $this->resetPage();
     }
@@ -23,8 +31,12 @@ class GateMonitoring extends Component
             ->when($this->search, function ($query) {
                 $query->where('license_plate', 'like', '%' . $this->search . '%');
             })
+            ->when($this->date, function ($query) {
+                $query->whereDate('created_at', $this->date);
+            })
             ->latest()
             ->paginate(20);
+
         return view('livewire.gate-monitoring', ['logs' => $logs]);
     }
 }

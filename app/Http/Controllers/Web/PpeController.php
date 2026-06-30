@@ -9,31 +9,17 @@ class PpeController extends Controller
 {
     public function index()
     {
-        $vesteLogs = PPELog::with(['camera', 'pees', 'worker'])
-            ->whereHas('pees', function ($q) {
-                $q->where('ppe_type', 'veste');
-            })
+        $logs = PPELog::with(['camera'])
             ->latest()
             ->limit(100)
             ->get();
 
-        $helmetLogs = PPELog::with(['camera', 'pees', 'worker'])
-            ->whereHas('pees', function ($q) {
-                $q->where('ppe_type', 'helmet');
-            })
-            ->latest()
-            ->limit(100)
-            ->get();
-
-        return view('ppe.index', compact(
-            'vesteLogs',
-            'helmetLogs'
-        ));
+        return view('ppe.index', compact('logs'));
     }
 
     public function show($id)
     {
-        $log = PPELog::with(['camera', 'pees', 'worker'])
+        $log = PPELog::with(['camera'])
             ->findOrFail($id);
 
         return view('ppe.show', compact('log'));

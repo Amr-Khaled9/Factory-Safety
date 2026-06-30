@@ -8,6 +8,12 @@
 
     <!-- HEADER -->
 
+    @php
+        $violationsList = is_array($log->violations)
+            ? $log->violations
+            : (json_decode($log->violations, true) ?? []);
+    @endphp
+
     <div class="show-header">
 
         <div>
@@ -22,11 +28,11 @@
 
         </div>
 
-        <span class="type-badge">
-
-            {{ strtoupper($log->pees->ppe_type) }}
-
-        </span>
+        @foreach($violationsList as $violation)
+<span class="badge bg-danger text-white fs-6 px-3 py-2">
+    {{ strtoupper($violation) }}
+</span>
+        @endforeach
 
     </div>
 
@@ -56,9 +62,9 @@
                 </div>
 
                 <div class="info-item">
-                    <span>PPE Type</span>
+                    <span>PPE Violations</span>
                     <strong>
-                        {{ $log->pees->ppe_type }}
+                        {{ implode(', ', $violationsList) }}
                     </strong>
                 </div>
 
@@ -70,9 +76,9 @@
                 </div>
 
                 <div class="info-item">
-                    <span>Worker ID</span>
+                    <span>Person ID</span>
                     <strong>
-                        #{{ $log->worker_id }}
+                        #{{ $log->person_id }}
                     </strong>
                 </div>
 

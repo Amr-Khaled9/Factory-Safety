@@ -9,43 +9,46 @@
     </div>
 
     <!-- Search -->
-    <input
-        class="search-input"
-        type="number"
-        wire:model.live.debounce.300ms="search"
-        placeholder="Search by detection ID...">
+    <div class="row mb-6">
+        <div class="col-md-4">
+            <input
+                class="search-input"
+                type="number"
+                wire:model.live.debounce.300ms="search"
+                placeholder="Search by detection ID...">
+        </div>
 
-    <!-- Toggle Buttons -->
-    <div class="toggle-wrapper">
-        @foreach($ppeTypes as $index => $type)
-        <button
-            class="toggle-btn {{ $index === 0 ? 'active' : '' }}"
-            data-target="{{ $type }}Section">
-            <i class="fa-solid fa-hard-hat me-2"></i>
-            {{ ucfirst($type) }}
-        </button>
-        @endforeach
+        <div class="col-md-6">
+            <input
+                class="form-control"
+                type="date"
+                wire:model.live="date">
+        </div>
     </div>
 
-    <!-- Detection Grids -->
-    @foreach($ppeTypes as $index => $type)
+    <!-- Detection Grid -->
+    <div class="detections-grid">
 
-    <div id="{{ $type }}Section"
-         class="detections-grid"
-         style="{{ $index !== 0 ? 'display:none;' : '' }}">
+        @forelse($logs as $log)
 
-        @forelse($logs[$type] as $log)
+        @php
+        $violationsList = is_array($log->violations)
+        ? $log->violations
+        : (json_decode($log->violations, true) ?? []);
+        @endphp
 
         <div class="detection-card">
 
-            <img src="{{ $log->image }}" alt="{{ $type }}">
+            <img src="{{ $log->image }}" alt="PPE Violation">
 
             <div class="card-body">
 
-                <span class="badge {{ $type }}">
+                @foreach($violationsList as $violation)
+                <span class="badge {{ $violation }}">
                     <i class="fa-solid fa-circle-exclamation"></i>
-                    {{ strtoupper($type) }}
+                    {{ strtoupper($violation) }}
                 </span>
+                @endforeach
 
                 <h3>Detection #{{ $log->id }}</h3>
 
@@ -66,31 +69,15 @@
 
         <div class="empty-state">
             <i class="fa-solid fa-magnifying-glass"></i>
-            No {{ $type }} detections found.
+            No detections found.
         </div>
 
         @endforelse
 
-        <div class="pagination-wrapper" style="grid-column:1/-1">
-            {{ $logs[$type]->links() }}
-        </div>
-
     </div>
 
-    @endforeach
+    <div class="pagination-wrapper">
+        {{ $logs->links() }}
+    </div>
 
 </section>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.toggle-btn');
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.querySelectorAll('.detections-grid').forEach(s => s.style.display = 'none');
-            document.getElementById(btn.dataset.target).style.display = 'grid';
-        });
-    });
-});
-</script>
