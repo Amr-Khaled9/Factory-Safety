@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\FireController;
 use App\Http\Controllers\Web\GateController;
 use App\Http\Controllers\Web\PpeController;
 use App\Http\Controllers\Web\ReportController;
@@ -39,6 +40,12 @@ Route::middleware('auth:web')->group(function () {
 
     Route::get('/gate/{id}', [GateController::class, 'show'])
         ->name('gate.show');
+
+    Route::get('/fire', [FireController::class, 'index'])
+        ->name('fire.index');
+
+    Route::get('/fire/{id}', [FireController::class, 'show'])
+        ->name('fire.show');
 });
 
 Route::middleware('admin')->group(function () {

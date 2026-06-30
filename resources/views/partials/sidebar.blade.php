@@ -49,6 +49,12 @@
                 <span>Gate Monitoring</span>
             </a>
         </li>
+        <li class="{{ request()->routeIs('fire.*') ? 'active' : '' }}">
+            <a href="{{ route('fire.index') }}">
+                <i class="fa-solid fa-fire"></i>
+                <span>Fire Detection</span>
+            </a>
+        </li>
     </ul>
 
     @if(auth()->user()->role == 'admin')

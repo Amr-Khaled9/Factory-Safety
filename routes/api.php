@@ -69,8 +69,8 @@ Route::get('/vehicle-log/all', [VehicleLogController::class, 'index']);
 Route::get('/vehicle-log/{id}', [VehicleLogController::class, 'show']);
 
 
-Route::get('/pee-log/all', [PPELogControler::class, 'index']);
-Route::get('/pee-log/{id}', [PPELogControler::class, 'show']);
+Route::get('/ppe-log/all', [PPELogControler::class, 'index']);
+Route::get('/ppe-log/{id}', [PPELogControler::class, 'show']);
 
 // Route::post('/speed-violations-log', [SpeedViolationController::class, 'storeSpeedViolationAndNotify']);
 // Route::get('/speed-violations', [SpeedViolationController::class, 'index']);
@@ -82,7 +82,7 @@ Route::get('/fire-logs/{id}', [FireLogController::class, 'show']);
 
 
 Route::middleware('ai.auth')->group(function () {
-    Route::post('/pee-log', [PPELogControler::class, 'storePpeLogAndNotify']);
+    Route::post('/ppe-log', [PPELogControler::class, 'storePpeLogAndNotify']);
     Route::post('/vehicle-log', [VehicleLogController::class, 'storeVehicleLogAndNotify']);
     Route::post('/fire-log', [FireLogController::class, 'storeFireAndNotify']);
 });

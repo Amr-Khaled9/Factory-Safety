@@ -14,6 +14,10 @@ class FireLog extends Model
         'number_camera'
     ];
 
+    public function camera()
+    {
+        return $this->belongsTo(Camera::class, 'camera_id');
+    }
 
     protected function serializeDate(DateTimeInterface $date): string
     {
