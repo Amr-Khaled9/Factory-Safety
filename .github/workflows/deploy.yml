@@ -1,23 +1,23 @@
-name: Factory-Safety
+# name: Factory-Safety
 
-on:
-  push:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Deploy To Server
-        uses: appleboy/ssh-action@master
+#     steps:
+#       - name: Deploy To Server
+#         uses: appleboy/ssh-action@master
 
-        with:
-          host: 72.62.186.142
-          username: root
-          password: lq)v/Tr0Ur4ltHTj
-          script: |
-            cd /root/Factory-Safety
-            git pull origin master
+#         with:
+#           host: 72.62.186.142
+#           username: root
+#           password: lq)v/Tr0Ur4ltHTj
+#           script: |
+#             cd /root/Factory-Safety
+#             git pull origin master
             
