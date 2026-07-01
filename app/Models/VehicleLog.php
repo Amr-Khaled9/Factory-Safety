@@ -14,7 +14,8 @@ class VehicleLog extends Model
         'image',
         'authorized',
         'vehicle_id',
-        'camera_id'
+        'camera_id',
+        'plate_color',
     ];
 
 

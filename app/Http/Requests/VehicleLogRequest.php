@@ -22,9 +22,10 @@ class VehicleLogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'license_plate'=> 'required|string|max:10|min:7',
-            'image'=> 'required|image|max:2048',
-            'number_camera' => 'required|integer'
+            'license_plate' => 'required|string|max:10|min:7',
+            'image' => 'required|image|max:2048',
+            'number_camera' => 'required|integer',
+            'plate_color'   => 'nullable|in:Private,Taxi,Truck,Customs',
         ];
     }
 }

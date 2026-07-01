@@ -33,6 +33,7 @@ class VehicleLogController extends Controller
             'license_plate' => $request->license_plate,
             'number_camera' => $request->number_camera,
             'image'         => $request->image,
+            'plate_color'   => $request->plate_color,
         ]);
 
         return response()->json($result, 200);

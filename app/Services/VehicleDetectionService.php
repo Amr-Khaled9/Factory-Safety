@@ -11,6 +11,7 @@ use App\Notifications\VehicleLogNotification;
 use Cloudinary\Cloudinary;
 use Illuminate\Support\Facades\DB;
 use App\Traits\UploadImageTrait;
+
 class VehicleDetectionService
 {
     use UploadImageTrait;
@@ -53,6 +54,7 @@ class VehicleDetectionService
                 'authorized'    => false,
                 'vehicle_id'    => $vehicle->id,
                 'camera_id'     => Camera::where('number_camera', $data['number_camera'])->value('id'),
+                'plate_color'   => $data['plate_color'],
             ]);
 
             $notificationTitle = 'Unauthorized Vehicle Detected';
@@ -99,5 +101,4 @@ class VehicleDetectionService
             ],
         ];
     }
-
 }
