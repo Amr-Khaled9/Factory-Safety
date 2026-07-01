@@ -20,6 +20,7 @@
         x-show="open"
         @click.outside="open = false"
         class="notifications-dropdown"
+        style="max-height:400px;overflow-y:auto"
         x-transition>
 
         <div class="dropdown-header">

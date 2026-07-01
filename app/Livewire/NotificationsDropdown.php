@@ -31,7 +31,7 @@ class NotificationsDropdown extends Component
 
         $this->notifications = Auth::user()
             ->unreadNotifications
-            ->take(10)
+            // ->take(10)
             ->toArray();
     }
 
