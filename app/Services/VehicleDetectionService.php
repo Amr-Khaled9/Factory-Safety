@@ -41,13 +41,14 @@ class VehicleDetectionService
 
             $imageUrl = $this->uploadLocal($data['image'], 'vehicle');
 
-            $vehicle = Vehicle::create([
-                'license_plate' => $data['license_plate'],
-                'authorized'    => false,
-                'vehicle_type'  => 'car',
-                'image'         => $imageUrl,
-            ]);
-
+            $vehicle = Vehicle::firstOrCreate(
+                ['license_plate' => $data['license_plate']],
+                [
+                    'authorized'   => false,
+                    'vehicle_type' => 'car',
+                    'image'        => $imageUrl,
+                ]
+            );
             $vehicleLog = VehicleLog::create([
                 'license_plate' => $vehicle->license_plate,
                 'image'         => $imageUrl,
