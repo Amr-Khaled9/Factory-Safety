@@ -13,6 +13,7 @@ class PPELog extends Model
     protected $table = "ppe_logs";
     protected $fillable = [
         'image',
+        'image_two',
         'violations',
         'camera_id',
         'worker_id',

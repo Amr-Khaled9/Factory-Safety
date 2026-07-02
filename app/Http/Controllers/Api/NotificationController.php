@@ -107,6 +107,7 @@ class NotificationController extends Controller
 
     public function destroyAll(Request $request): JsonResponse
     {
+        $user = $request->user();
         $query = DatabaseNotification::where('notifiable_id',   $user->id)
             ->where('notifiable_type', get_class($user));
 

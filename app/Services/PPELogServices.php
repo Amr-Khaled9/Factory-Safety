@@ -11,10 +11,11 @@ use Cloudinary\Cloudinary;
 
 class PPELogServices
 {
-    public function create($request, $imagePath): PPELog
+    public function create($request, $imagePath, $imageTwoPath = null): PPELog
     {
         return PPELog::create([
             'image'      => $imagePath,
+            'image_two'  => $imageTwoPath,
             'violations'     => json_encode($request->violations),
             'camera_id'  => Camera::where('number_camera', $request->number_camera)->value('id'),
             'person_id'  => $request->person_id,

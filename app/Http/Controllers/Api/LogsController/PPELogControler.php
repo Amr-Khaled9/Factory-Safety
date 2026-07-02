@@ -31,7 +31,11 @@ class PPELogControler extends Controller
 
             $imagePath = $this->uploadLocal($request->image, 'ppe');
 
-            $peeLog = $this->pEELogServices->create($request, $imagePath);
+            $imageTwoPath = $request->hasFile('image_two')
+                ? $this->uploadLocal($request->image_two, 'ppe')
+                : null;
+
+            $peeLog = $this->pEELogServices->create($request, $imagePath, $imageTwoPath);
 
             $violationsList = implode(', ', $request->violations);
 

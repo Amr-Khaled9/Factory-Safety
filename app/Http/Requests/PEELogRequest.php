@@ -31,6 +31,7 @@ class PEELogRequest extends FormRequest
         return [
             'violations' => 'required|array|min:1',
             'image' => 'required|image|max:2048',
+            'image_two' => 'nullable|image|max:2048',
             'number_camera' => 'required|integer',
             'person_id' => 'required|integer',
             'violations.*'  => 'required|string',
