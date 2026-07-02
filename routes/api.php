@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\LogsController\FireLogController;
 use App\Http\Controllers\Api\LogsController\SpeedViolationController;
 use App\Http\Controllers\Api\LogsController\VehicleLogController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\ReportController;
 
 // Route::get('/user', function (Request $request) {
@@ -85,4 +86,20 @@ Route::middleware('ai.auth')->group(function () {
     Route::post('/ppe-log', [PPELogControler::class, 'storePpeLogAndNotify']);
     Route::post('/vehicle-log', [VehicleLogController::class, 'storeVehicleLogAndNotify']);
     Route::post('/fire-log', [FireLogController::class, 'storeFireAndNotify']);
+});
+
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::prefix('notifications')->controller(NotificationController::class)->group(function () {
+
+        Route::get('/',              'index');           // GET    /api/notifications
+        Route::get('/{id}',          'show');            // GET    /api/notifications/{id}
+        Route::patch('/{id}/read',   'markAsRead');      // PATCH  /api/notifications/{id}/read
+        Route::patch('/{id}/unread', 'markAsUnread');    // PATCH  /api/notifications/{id}/unread
+        Route::post('/read-all',     'markAllAsRead');   // POST   /api/notifications/read-all
+        Route::delete('/',           'destroyAll');      // DELETE /api/notifications
+        Route::delete('/{id}',       'destroy');         // DELETE /api/notifications/{id}
+
+    });
 });
