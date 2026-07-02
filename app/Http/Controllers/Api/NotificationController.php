@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Http\JsonResponse;
+
 class NotificationController extends Controller
 {
 
@@ -106,7 +107,8 @@ class NotificationController extends Controller
 
     public function destroyAll(Request $request): JsonResponse
     {
-        $query = $request->user()->notifications();
+        $query = DatabaseNotification::where('notifiable_id',   $user->id)
+            ->where('notifiable_type', get_class($user));
 
         if ($request->boolean('only_read')) {
             $query->whereNotNull('read_at');
@@ -120,12 +122,13 @@ class NotificationController extends Controller
             'deleted_count'  => $count,
         ]);
     }
- 
+
     private function findNotification(string $id): DatabaseNotification
     {
-        return auth()->user()
-            ->notifications()
-            ->findOrFail($id);
+        return DatabaseNotification::where('id', $id)
+            ->where('notifiable_id',   auth()->id())
+            ->where('notifiable_type', get_class(auth()->user()))
+            ->firstOrFail();
     }
 
     private function format(DatabaseNotification $notification): array
