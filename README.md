@@ -71,15 +71,11 @@ Every request is validated through dedicated **Form Requests**, then passed to t
 
 ## 🧱 Project Structure
 
-> Place the structure image here
-
 ![Project Structure](public/system.png)
 
 ---
 
 ## 🔗 Database Design (ERD)
-
-> Place the models relationship diagram here
 
 ![Models Integration](public/ERD.png)
 
@@ -87,19 +83,13 @@ Every request is validated through dedicated **Form Requests**, then passed to t
 
 ## 🤖 AI Integration
 
-> Place a diagram showing how the AI system integrates with the Backend here
-
 ![AI Integration](public/Architecture.png)
 
 ---
 
 ## 🎥 Demo Video
-
-> Place the demo video/link here
-
 <!-- [![Demo Video]](public/Screen Recording 2026-07-08 at 12.06.12 PM.mp4) -->
-
-[![Demo Video]]([simplescreenrecorder-2026-07-09_15.34.35.mkv](https://drive.google.com/file/d/1OUOvRtvCVsYvzV0ETIdw8bL8661jzit0/view?usp=sharing))
+https://drive.google.com/file/d/1OUOvRtvCVsYvzV0ETIdw8bL8661jzit0/view?usp=drive_link
 
 
 --- 
