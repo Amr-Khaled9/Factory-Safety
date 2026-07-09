@@ -99,7 +99,7 @@ Every request is validated through dedicated **Form Requests**, then passed to t
 
 <!-- [![Demo Video]](public/Screen Recording 2026-07-08 at 12.06.12 PM.mp4) -->
 
-[![Demo Video]]([public/simplescreenrecorder-2026-07-09_15.34.35.mkv](https://drive.google.com/file/d/1OUOvRtvCVsYvzV0ETIdw8bL8661jzit0/view?usp=sharing))
+[![Demo Video]]([simplescreenrecorder-2026-07-09_15.34.35.mkv](https://drive.google.com/file/d/1OUOvRtvCVsYvzV0ETIdw8bL8661jzit0/view?usp=sharing))
 
 
 --- 
