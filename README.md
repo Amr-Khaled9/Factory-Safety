@@ -11,7 +11,7 @@ Factories face daily risks that are hard to monitor manually around the clock: w
 **Factory Safety** solves this by:
 
 1. Connecting a network of cameras to AI detection models that analyze video feeds in real time.
-2. When a model detects a violation (PPE / unauthorized vehicle / fire / speed violation), it sends the data to the Backend server.
+2. When a model detects a violation (PPE / vehicle / fire ), it sends the data to the Backend server.
 3. The Backend logs the event, sends an **instant notification (real-time + push notification)** to administrators, and provides a **dashboard** to review all events, reports, and statistics.
 
 This turns the cameras from simple video recorders into an early-warning system with real documentation of violations.
@@ -28,14 +28,13 @@ The Backend is built with **Laravel 12** and acts as the brain of the whole syst
   - `VehicleDetectionService` – logic for recognizing authorized/unauthorized vehicles.
   - `PPELogServices` – handling PPE (personal protective equipment) violations.
   - `FireLogService` – logging fire/smoke incidents.
-  - `SpeedViolationService` – logging speed violations.
   - `DashboardService` – aggregating real-time statistics (daily incident counts, latest alerts...).
   - `ReportService` – generating reports.
   - `FcmService` – sending push notifications via Firebase.
 
 ### 2. Database Design
 Designed the migrations and relationships between the core tables:
-`users`, `workers`, `cameras`, `vehicles`, `authorized_vehicles`, `vehicle_logs`, `ppes`, `ppe_logs`, `speed_violations`, `fire_logs`, `reports`, `notifications`, `fcm_tokens`.
+`users`, `workers`, `cameras`, `vehicles`, `authorized_vehicles`, `vehicle_logs`, `ppes`, `ppe_logs`, `fire_logs`, `reports`, `notifications`, `fcm_tokens`.
 
 Each violation type has its own Model and Log, linked to the Camera that captured the event through `belongsTo` relationships, while notifications are linked to multiple log types via **polymorphic relations** (`morphMany`).
 
@@ -58,13 +57,11 @@ Every request is validated through dedicated **Form Requests**, then passed to t
 
 ### 5. Authentication & Authorization
 - **Laravel Sanctum** for API authentication.
-- **Google login** via Socialite.
 - Custom middleware (`AdminMiddleware`, `WebAdminMiddleware`, `WebUserMiddleware`) to control access based on user role (Admin / User).
 
 ### 6. Other Features
 - Image upload and storage via **Cloudinary**.
 - Periodic incident/violation report generation.
-- Auto-generated API documentation via **Scramble**.
 - Request and performance monitoring during development via **Laravel Telescope**.
 
 ---
